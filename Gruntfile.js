@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         uglify: {
             build: {
                 src: 'client/landing.js',
-                dest: 'server/public/assets/scripts/client.min.js'
+                dest: 'server/public/assets/scripts/landing.min.js'
             }
         },
         watch: {
