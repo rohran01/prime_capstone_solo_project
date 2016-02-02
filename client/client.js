@@ -75,6 +75,23 @@ app.controller('GoalsController', ['$scope', '$http', function($scope, $http) {
 app.controller('MyFoodsController', ['$scope', '$http', function($scope, $http) {
 
     $scope.header = false;
+    $scope.myFood = {};
+    $scope.allmyFoods = [];
+
+    $scope.addMyFood = function() {
+        console.log($scope.myFood);
+
+        //make http post to add food to db
+
+        //call getMyFoods
+    };
+
+    $scope.getMyFoods = function() {
+
+        //make get call to db and fill $scope.allMyFoods
+    };
+
+    $scope.getMyFoods();
 
 
 }]);

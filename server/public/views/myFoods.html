@@ -1,0 +1,59 @@
+<h1>My Foods</h1>
+
+<div class="add-food">
+    <div class="food-entry">
+        <div>
+            <label for="name">Name</label><br>
+            <input type="text" ng-model="myFood.name" id="name" />
+        </div>
+        <div>
+            <label for="calories">Calories</label><br>
+            <input type="text" ng-model="myFood.calories" id="calories" />
+        </div>
+        <div>
+            <label for="fat">Fat</label><br>
+            <input type="text" ng-model="myFood.fat" id="fat" />
+        </div>
+        <div>
+            <label for="carbs">Carbs</label><br>
+            <input type="text" ng-model="myFood.carbs" id="carbs" />
+        </div>
+        <div>
+            <label for="protein">Protein</label><br>
+            <input type="text" ng-model="myFood.protein" id="protein" />
+        </div>
+        <div>
+            <label for="fiber">Fiber</label><br>
+            <input type="text" ng-model="myFood.fiber" id="fiber" />
+        </div>
+        <div>
+            <label for="netcarbs">Net Carbs</label><br>
+            <input type="text" ng-model="myFood.netCarbs" id="netCarbs" />
+        </div>
+        <button ng-click="addMyFood()">Add Food</button>
+    </div>
+</div>
+
+<div class="foods-container">
+    <div class="foods-headers">
+        <ul>
+            <li>Name</li>
+            <li>Calories</li>
+            <li>Fat</li>
+            <li>Carbs</li>
+            <li>Protein</li>
+            <li>Fiber</li>
+            <li>Net Carbs</li>
+        </ul>
+    </div>
+    <ul ng-repeat="food in allMyFoods">
+        <li>{{food.name}}</li>
+        <li>{{food.calories}}</li>
+        <li>{{food.fat}}</li>
+        <li>{{food.carbs}}</li>
+        <li>{{food.protein}}</li>
+        <li>{{food.fiber}}</li>
+        <li>{{food.netCarbs}}</li>
+    </ul>
+
+</div>

@@ -9,7 +9,7 @@
     <base href="/">
 </head>
 <body>
-    <div ng-if="header" class="login-header">
+    <div ng-if="!header" class="login-header">
         <h1>KetoLog</h1>
         <hr/>
         <h3>nutrition tracking for a low-carb lifestyle</h3>
@@ -38,6 +38,10 @@
 
     <div ng-view>
 
+    </div>
+
+    <div class="footer">
+        <!--add sticky footer with whitespace-->
     </div>
 
 </body>

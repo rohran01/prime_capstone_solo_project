@@ -11,10 +11,10 @@ console.log('register router hit');
 //});
 
 
-router.post('/', function(request, response, next) {
-
-    console.log(request);
-
+//router.post('/', function(request, response, next) {
+//
+//    console.log(request);
+//
 //    Users.create(request.body, function(err, post) {
 //        if(err) {
 //            next(err);
@@ -22,7 +22,7 @@ router.post('/', function(request, response, next) {
 //            response.redirect('/dailyLogs')
 //        }
 //    })
-});
+//});
 
 
 module.exports = router;
