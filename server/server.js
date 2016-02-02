@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 var User = require('./models/user');
 var index = require('./routes/index');
 var register = require('./routes/register');
+var login = require('./routes/login');
+var userInfo = require('./routes/userInfo');
 
 var app = express();
 var localStrategy = require('passport-local').Strategy;
@@ -41,7 +43,7 @@ passport.use('local', new localStrategy ({
 
 //authenticates users
 passport.serializeUser(function(user, done) {
-    dont(null, user.id);
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
@@ -61,20 +63,20 @@ passport.use('local', new localStrategy ({
         User.findOne({username: username}, function(err, user) {
             if(err) {
                 throw(err);
+            } else if(!user) {
+                return done(null, false, {message: 'Incorrect username and/or password'});
+            } else {
+                //tests a matching password
+                user.comparePassword(password, function (err, isMatch) {
+                    if (err) {
+                        throw err;
+                    } else if (isMatch) {
+                        return done(null, user)
+                    } else {
+                        done(null, false, {message: 'Incorrect username and/or password'});
+                    }
+                })
             }
-            if(!user) {
-                return done(null, false, {message: 'Incorrect username and password'});
-            }
-            //tests a matching password
-            user.comparePassword(password, function(err, isMatch) {
-                if(err) {
-                    throw err;
-                } else if(isMatch) {
-                    return done(null, user)
-                } else {
-                    done(null, false, {message: 'Incorrect username and/or password'});
-                }
-            })
         })
 }));
 
@@ -88,7 +90,9 @@ app.use(session ({
 }));
 
 //app.use routes
-app.post('/registerUser', register);
+app.use('/userInfo', userInfo);
+app.use('/loginUser', login);
+app.use('/registerUser', register);
 app.use('/', index);
 
 

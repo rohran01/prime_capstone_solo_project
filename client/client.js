@@ -36,31 +36,46 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 
 
-app.controller('RegisterController', ['$scope', '$http', function($scope, $http) {
+app.controller('RegisterController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
     $scope.header = true;
-
     $scope.newUser = {};
 
     $scope.registerUser = function() {
         console.log('click!');
-        $http.post('/registerUser', $scope.data).then(function(request, response) {
-            console.log(response);
+        $http.post('/registerUser', $scope.newUser).then(function(response) {
+            if(response.status == 200){
+                $location.path('login');
+            }
         })
     }
-
 }]);
 
-app.controller('LoginController', ['$scope', '$http', function($scope, $http) {
+app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices', function($scope, $http, $location, UserServices) {
 
     $scope.header = true;
+    $scope.userLogin = {};
 
-
+    $scope.loginUser = function() {
+        console.log($scope.userLogin);
+        $http.post('/loginUser', $scope.userLogin).then(function(response) {
+            console.log(response);
+            if(response.status == 200) {
+                UserServices.getUserInfo($scope.userLogin);
+                $location.path('dailyLogs');
+            } else {
+                $location.path('login');
+            }
+        })
+    };
 }]);
 
-app.controller('DailyLogsController', ['$scope', '$http', function($scope, $http) {
+app.controller('DailyLogsController', ['$scope', '$http', 'UserServices', function($scope, $http, UserServices) {
 
     $scope.header = false;
+
+    var userStuff = UserServices.userInfo;
+    console.log('from daily logs:', userStuff)
 
 
 }]);
@@ -100,5 +115,23 @@ app.controller('StatsController', ['$scope', '$http', function($scope, $http) {
 
     $scope.header = false;
 
+
+}]);
+
+app.factory('UserServices', ['$http', function($http) {
+    var userInfo = {};
+
+    function getUserInfo(loginObject) {
+        var username = {params: {username: loginObject.username}};
+        console.log('username:', username);
+        $http.get('/userInfo', username).then(function(response) {
+            userInfo = response.data;
+        })
+    }
+
+    return {
+        getUserInfo: getUserInfo,
+        userInfo: userInfo
+    }
 
 }]);

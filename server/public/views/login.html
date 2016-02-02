@@ -1,20 +1,18 @@
 <div class="login-form">
     <h2>LogIn</h2>
     <hr/>
-    <form>
-        <div class="login-username">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" placeholder="username" />
-        </div>
-        <div class="login-password">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" placeholder="password" />
-        </div>
-        <div class="login-submit">
-            <input type="submit" value="Log In" />
-        </div>
-        <div class="register-btn">
-            <a href="/register"><button>Register</button></a>
-        </div>
-    </form>
+    <div class="login-username">
+        <label for="username">Username:</label>
+        <input type="text" ng-model="userLogin.username" id="username" placeholder="username" />
+    </div>
+    <div class="login-password">
+        <label for="password">Password:</label>
+        <input type="password" ng-model="userLogin.password" id="password" placeholder="password" />
+    </div>
+    <div class="login-submit">
+        <button ng-click="loginUser()" value="Log In">Log In</button>
+    </div>
+    <div class="register-btn">
+        <a href="/register"><button>Register</button></a>
+    </div>
 </div>
