@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="landingApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Log In</title>
+    <script src="vendor/angular/angular.min.js"></script>
+    <script src="vendor/angular-route/angular-route.min.js"></script>
+    <script src="assets/scripts/client.min.js"></script>
+    <base href="/">
+</head>
+<body>
+    <div ng-if="header" class="login-header">
+        <h1>KetoLog</h1>
+        <hr/>
+        <h3>nutrition tracking for a low-carb lifestyle</h3>
+        <div class="landing-logo">
+            <img src="views/images/logo.png" />
+        </div>
+    </div>
+
+    <div ng-if="!header" class="main-header">
+        <div class="main-logo">
+            <img src="views/images/logo.png" />
+        </div>
+        <div class="main-banner">
+            <div class="main-title">
+                <h1>KetoLog</h1>
+                <h2>nutrition tracking for a low-carb lifestyle</h2>
+            </div>
+            <div class="main-nav">
+                <a href="/dailyLogs"><button>Daily Logs</button></a>
+                <a href="/goals"><button>Goals</button></a>
+                <a href="/myFoods"><button>My Foods</button></a>
+                <a href="/stats"><button>Stats</button></a>
+            </div>
+        </div>
+    </div>
+
+    <div ng-view>
+
+    </div>
+
+</body>
+</html>

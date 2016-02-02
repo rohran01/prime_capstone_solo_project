@@ -3,18 +3,19 @@
     <hr/>
     <p>Please enter a username and password below:</p>
     <hr/>
-    <form>
-        <div class="login-username">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" placeholder="username" />
-        </div>
-        <div class="login-password">
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" placeholder="password" />
-        </div>
-        <div class="to-login">
-            <p>Already a registered user?</p>
-            <a href="/login"><button>Log In</button></a>
-        </div>
-    </form>
+    <div class="login-username">
+        <label for="username">Username:</label>
+        <input type="text" ng-model="newUser.username" id="username" placeholder="username" />
+    </div>
+    <div class="login-password">
+        <label for="password">Password:</label>
+        <input type="password" ng-model="newUser.password" id="password" placeholder="password" />
+    </div>
+    <div class="register-btn">
+        <button ng-click="registerUser()">Register</button>
+    </div>
+    <div class="to-login">
+        <p>Already a registered user?</p>
+        <a href="/login"><button>Log In</button></a>
+    </div>
 </div>
