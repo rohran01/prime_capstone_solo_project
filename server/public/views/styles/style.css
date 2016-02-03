@@ -1,0 +1,85 @@
+html {
+
+    font-family:'Anaheim', sans-serif;
+}
+
+body {
+    /*background: url("../images/roast_beef.jpg") no-repeat center center fixed;*/
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*-o-background-size: cover;*/
+    /*background-size: cover;*/
+}
+
+.login-form, .register-form, .login-header {
+    width: 30%;
+    margin: 30px auto;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.login-header {
+    width: 60%;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+input, button {
+    margin: 5px auto;
+}
+
+button {
+    width: 40%
+}
+
+hr {
+    width: 70%;
+    color: black;
+}
+
+h1, h2 {
+    margin: 0;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    color: #568203;
+}
+
+h1 {
+    font-size: 90px;
+}
+
+h2 {
+    font-size: 48px;
+}
+
+a {
+    color: black;
+}
+
+.bg {
+    /* Set rules to fill background */
+    min-height: 100%;
+    min-width: 1024px;
+
+    /* Set up proportionate scaling */
+    width: 100%;
+    height: auto;
+
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: -1000;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+    .bg {
+        left: 50%;
+        margin-left: -512px;   /* 50% */
+    }
+}
