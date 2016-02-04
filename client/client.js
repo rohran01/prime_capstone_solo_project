@@ -1,5 +1,7 @@
 var app = angular.module('landingApp', ['ngRoute']);
 
+var globalUser;
+
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
@@ -43,6 +45,7 @@ app.controller('RegisterController', ['$scope', '$http', '$location', function($
 
     $scope.registerUser = function() {
         console.log('click!');
+        console.log($scope.newUser);
         $http.post('/registerUser', $scope.newUser).then(function(response) {
             if(response.status == 200){
                 $location.path('login');
@@ -61,6 +64,8 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices
         $http.post('/loginUser', $scope.userLogin).then(function(response) {
             console.log(response);
             if(response.status == 200) {
+                globalUser = $scope.userLogin.username;
+                console.log(globalUser);
                 UserServices.getUserInfo($scope.userLogin);
                 $location.path('dailyLogs');
             } else {
@@ -95,18 +100,25 @@ app.controller('MyFoodsController', ['$scope', '$http', function($scope, $http) 
 
     $scope.addMyFood = function() {
         console.log($scope.myFood);
+        var objectToSend = {username: globalUser, foodToAdd: $scope.myFood}
 
         //make http post to add food to db
+        $http.put('/userInfo/addFood', objectToSend).then(function(response) {
+            console.log(response);
+        });
 
-        //call getMyFoods
+        //$scope.getMyFoods();
     };
 
     $scope.getMyFoods = function() {
-
+        console.log(globalUser);
         //make get call to db and fill $scope.allMyFoods
+        $http.get('/userInfo/myFoods', globalUser).then(function(response) {
+            console.log(response);
+        })
     };
 
-    $scope.getMyFoods();
+    //$scope.getMyFoods();
 
 
 }]);
@@ -126,6 +138,7 @@ app.factory('UserServices', ['$http', function($http) {
         console.log('username:', username);
         $http.get('/userInfo', username).then(function(response) {
             userInfo = response.data;
+            console.log(userInfo);
         })
     }
 

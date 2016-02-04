@@ -1,5 +1,4 @@
 var express = require('express');
-var path = require('path');
 var Users = require('../models/user');
 
 var router = express.Router();
@@ -12,6 +11,7 @@ router.post('/', function(request, response, next) {
         if(err) {
             next(err);
         } else {
+            console.log(post);
             response.sendStatus(200);
         }
     })

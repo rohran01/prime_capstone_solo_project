@@ -3,7 +3,7 @@ var passport = require('passport');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var User = require('./models/user');
+var models = require('./models/user');
 var index = require('./routes/index');
 var register = require('./routes/register');
 var login = require('./routes/login');
@@ -47,7 +47,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
+    models.User.findById(id, function(err, user) {
         if(err) {
             done(err);
         } else {
@@ -60,7 +60,7 @@ passport.use('local', new localStrategy ({
     passReqToCallback: true,
     usernameField: 'username'},
     function(req, username, password, done) {
-        User.findOne({username: username}, function(err, user) {
+        models.User.findOne({username: username}, function(err, user) {
             if(err) {
                 throw(err);
             } else if(!user) {

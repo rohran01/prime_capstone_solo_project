@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
+//var Food = require('./food');
 var SALT_WORK_FACTOR = 10;
 
 //creates mongoose schema
@@ -20,9 +21,11 @@ var UserSchema = new Schema({
     username: {type: String, required: true, index: {unique: true}},
     password: {type: String, require: true},
     logs: [{date:{type: Date, required: true},
-            food: FoodSchema,
+            food: {type: Schema.ObjectId,
+                    ref: 'FoodSchema'},
             meal: String}],
-    myFoods: [{food: FoodSchema}]
+    myFoods: [{food: {type: Schema.ObjectId,
+                        ref: 'FoodSchema'}}]
 });
 
 //hashes passwords
@@ -71,4 +74,6 @@ UserSchema.methods.dailyTotals = function(date) {
 
 };
 
-module.exports = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+var Food = mongoose.model('Food', FoodSchema);
+module.exports = {User: User, Food: Food};
