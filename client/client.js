@@ -55,10 +55,13 @@ app.controller('RegisterController', ['$scope', '$http', '$location', function($
     }
 }]);
 
-app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices', function($scope, $http, $location, UserServices) {
+app.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
 
     $scope.header = header;
     $scope.userLogin = {};
+    $scope.userInfo = UserService.userInfo;
+
+
 
     $scope.loginUser = function() {
         console.log($scope.userLogin);
@@ -68,7 +71,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices
                 header = false;
                 globalUser = $scope.userLogin.username;
                 console.log(globalUser);
-                UserServices.getUserInfo($scope.userLogin);
+                UserService.getUserInfo($scope.userLogin);
                 $location.path('dailyLogs');
             } else {
                 $location.path('login');
@@ -77,11 +80,12 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices
     };
 }]);
 
-app.controller('DailyLogsController', ['$scope', '$http', 'UserServices', function($scope, $http, UserServices) {
+app.controller('DailyLogsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
     $scope.header = header;
+    $scope.userInfo = UserService.userInfo;
 
-    var userStuff = UserServices.userInfo;
+    var userStuff = UserService.userInfo;
     console.log('from daily logs:', userStuff)
 
 
@@ -132,14 +136,15 @@ app.controller('StatsController', ['$scope', '$http', function($scope, $http) {
 
 }]);
 
-app.factory('UserServices', ['$http', function($http) {
+app.factory('UserService', ['$http', function($http) {
     var userInfo = {};
 
     function getUserInfo(loginObject) {
         var username = {params: {username: loginObject.username}};
         console.log('username:', username);
         $http.get('/userInfo', username).then(function(response) {
-            userInfo = response.data;
+            userInfo.data = response.data;
+            userInfo.data.isLoggedIn = true;
             console.log(userInfo);
         })
     }

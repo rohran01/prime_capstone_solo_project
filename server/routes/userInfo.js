@@ -1,30 +1,36 @@
 var express = require('express');
-var models = require('../models/user');
-//var Food = require('../models/food');
+var User = require('../models/user');
+var Food = require('../models/food').model;
 
 var router = express.Router();
 
 router.put('/addFood', function(request, response) {
     var name = request.body.username;
     var food = request.body.foodToAdd;
-    console.log(request.body);
-    models.User.update(
-        {username: name},
-        {$push: {myFoods: models.Food.insert([{name: food.name,
-                            calories: food.calories}])}},
-        function(err, user) {
-            if(err) {
-                console.log(err)
-            } else {
-                return response.json(user);
+    console.log('food', food);
+    console.log('body', request.body);
+
+    Food.create({name: food.name, calories: food.calories}, function(err, createdFood) {
+        console.log('Created food', createdFood);
+        User.update(
+            {username: name},
+            {$push: {myFoods: createdFood}},
+            function (err, user) {
+                if (err) {
+                    console.log('Error adding food', err);
+                } else {
+                    return response.sendStatus(200);
+                }
             }
-        }
-    )
+        )
+    });
+
+
 });
 
 router.get('/myFoods', function(request, response) {
     var searchName = (request.body.username);
-    models.User.findOne({username: searchName}, function(err, user) {
+    User.findOne({username: searchName}, function(err, user) {
         if (err) {
             console.log(err);
         } else {
@@ -35,7 +41,7 @@ router.get('/myFoods', function(request, response) {
 
 router.get('/', function(request, response) {
     var searchName = (request.query.username);
-    models.User.findOne({username: searchName}, function(err, user) {
+    User.findOne({username: searchName}, function(err, user) {
         if(err) {
             console.log(err)
         } else {

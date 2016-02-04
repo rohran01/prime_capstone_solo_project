@@ -24,7 +24,7 @@ body {
 * html .clearfix { height: 1%; }
 .clearfix { display: block; }
 
-.goal-container, .box-container, .main-header, .login-form, .register-form, .login-header, .log-container, .add-food-container, .foods-container {
+.goal-container, .main-header, .login-form, .register-form, .login-header, .log-container, .add-food-container, .foods-container {
     width: 30%;
     margin: 30px auto;
     padding: 10px;
@@ -126,7 +126,21 @@ body {
     width: 80%;
 }
 .box-container {
-    width: 80%;
+    width: 90%;
+    margin: 10px auto;
+}
+.goal-box {
+    display: inline-block;
+    border: 1px solid black;
+    width: 24%;
+}
+.goal-display {
+    height: 80px;
+    font-size: 72px;
+}
+.goal-input {
+    width: 90%;
+    text-align: center;
 }
 
 input, button {

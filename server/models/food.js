@@ -12,4 +12,7 @@ var FoodSchema = new Schema({
     netCarbs: {type: Number}
 });
 
-module.exports = mongoose.model('Food', FoodSchema);
+
+exports.model = mongoose.model('Food', FoodSchema);
+
+exports.schema = FoodSchema;
