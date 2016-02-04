@@ -11,6 +11,19 @@ body {
     /*background-size: cover;*/
 }
 
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
 .main-header, .login-form, .register-form, .login-header, .log-container, .add-food-container, .foods-container {
     width: 30%;
     margin: 30px auto;
@@ -59,8 +72,46 @@ body {
 }
 
 
-.header-container li, .totals-container li, .foods-header li {
+.header-container li, .totals-container li, .foods-headers li {
     list-style-type: none;
+    display: inline-block;
+    float: left;
+    width: 10%;
+}
+
+.date-container * {
+    display: inline-block;
+}
+.date-container button {
+    width: auto;
+}
+
+.header-container {
+    margin-left: 15%;
+}
+.meal-container h4 {
+    text-align: left;
+}
+
+.meal-container p {
+    display: inline-block;
+    /*width: 15%;*/
+}
+.food-entry {
+    width: 100%;
+}
+
+.food-input {
+    display: inline-block;
+    width: 10%;
+    margin: 0;
+}
+
+.food-input input {
+    width: 90%;
+}
+.food-input button {
+    width: 100%;
 }
 
 input, button {
