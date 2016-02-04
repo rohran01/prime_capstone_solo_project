@@ -11,7 +11,7 @@ body {
     /*background-size: cover;*/
 }
 
-.login-form, .register-form, .login-header {
+.main-header, .login-form, .register-form, .login-header, .log-container, .add-food-container, .foods-container {
     width: 30%;
     margin: 30px auto;
     padding: 10px;
@@ -27,6 +27,40 @@ body {
 .logo {
     width: 100px;
     height: auto;
+}
+
+.main-header{
+    width: 100%;
+    height: 250px;
+}
+.logo-container {
+    display: inline-block;
+    float: left;
+    width: 20%;
+    margin: 0;
+}
+.logo-container img {
+    height: 230px;
+    width: 100%;
+}
+.banner-container {
+    display: inline-block;
+    float: left;
+    width: 80%;
+    margin: 0;
+    text-align: left
+}
+.main-nav button {
+    width: 23%;
+}
+
+.log-container, .add-food-container, .foods-container {
+    width: 70%
+}
+
+
+.header-container li, .totals-container li, .foods-header li {
+    list-style-type: none;
 }
 
 input, button {

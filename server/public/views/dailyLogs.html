@@ -1,2 +1,91 @@
-<h1>Daily Logs</h1>
-<h2>test</h2>
+<div class="log-container">
+    <div class="date-container">
+        <button>Next</button>
+        <h3>Date</h3>
+        <button>Prev</button>
+    </div>
+    <div class="header-container">
+        <ul>
+            <li>Name</li>
+            <li>Calories</li>
+            <li>Fat</li>
+            <li>Carbs</li>
+            <li>Protein</li>
+            <li>Fiber</li>
+            <li>Net Carbs</li>
+        </ul>
+    </div>
+    <div meal-container>
+        <div class="breakfast-container">
+            <h4>Breakfast</h4>
+            <ul ng-repeat="breakfast in breakfasts">
+                <li>
+                    <p>{{breakfast.name}}</p>
+                    <p>{{breakfast.calories}}</p>
+                    <p>{{breakfast.fat}}</p>
+                    <p>{{breakfast.carbs}}</p>
+                    <p>{{breakfast.protein}}</p>
+                    <p>{{breakfast.fiber}}</p>
+                    <p>{{breakfast.netCarbs}}</p>
+                    <button ng-bind="breakfast.id">Remove</button>
+                </li>
+            </ul>
+        </div>
+        <div class="lunch-container">
+            <h4>Lunch</h4>
+            <ul ng-repeat="lunch in lunches">
+                <li>
+                    <p>{{lunch.name}}</p>
+                    <p>{{lunch.calories}}</p>
+                    <p>{{lunch.fat}}</p>
+                    <p>{{lunch.carbs}}</p>
+                    <p>{{lunch.protein}}</p>
+                    <p>{{lunch.fiber}}</p>
+                    <p>{{lunch.netCarbs}}</p>
+                    <button ng-bind="lunch.id">Remove</button>
+                </li>
+            </ul>
+        </div>
+        <div class="dinner-container">
+            <h4>Dinner</h4>
+            <ul ng-repeat="dinner in dinners">
+                <li>
+                    <p>{{dinner.name}}</p>
+                    <p>{{dinner.calories}}</p>
+                    <p>{{dinner.fat}}</p>
+                    <p>{{dinner.carbs}}</p>
+                    <p>{{dinner.protein}}</p>
+                    <p>{{dinner.fiber}}</p>
+                    <p>{{dinner.netCarbs}}</p>
+                    <button ng-bind="dinner.id">Remove</button>
+                </li>
+            </ul>
+        </div>
+        <div class="snack-container">
+            <h4>Snacks</h4>
+            <ul ng-repeat="snack in snacks">
+                <li>
+                    <p>{{snack.name}}</p>
+                    <p>{{snack.calories}}</p>
+                    <p>{{snack.fat}}</p>
+                    <p>{{snack.carbs}}</p>
+                    <p>{{snack.protein}}</p>
+                    <p>{{snack.fiber}}</p>
+                    <p>{{snack.netCarbs}}</p>
+                    <button ng-bind="snack.id">Remove</button>
+                </li>
+            </ul>
+        </div>
+        <div class="totals-container">
+            <ul>
+                <li class="total">Total</li>
+                <li>{{total.calories}}</li>
+                <li>{{total.fat}}</li>
+                <li>{{total.carbs}}</li>
+                <li>{{total.protein}}</li>
+                <li>{{total.fiber}}</li>
+                <li>{{total.netCarbs}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
