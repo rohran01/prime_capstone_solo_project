@@ -24,8 +24,7 @@ var UserSchema = new Schema({
             food: {type: Schema.ObjectId,
                     ref: 'FoodSchema'},
             meal: String}],
-    myFoods: [{food: {type: Schema.ObjectId,
-                        ref: 'FoodSchema'}}]
+    myFoods: [FoodSchema]
 });
 
 //hashes passwords

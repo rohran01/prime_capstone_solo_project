@@ -10,8 +10,8 @@ router.put('/addFood', function(request, response) {
     console.log(request.body);
     models.User.update(
         {username: name},
-        {$push: {myFoods: models.Food.create({name: food.name,
-                            calories: food.calories})}},
+        {$push: {myFoods: models.Food.insert([{name: food.name,
+                            calories: food.calories}])}},
         function(err, user) {
             if(err) {
                 console.log(err)

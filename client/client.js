@@ -1,6 +1,7 @@
 var app = angular.module('landingApp', ['ngRoute']);
 
 var globalUser;
+var header = true;
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
@@ -40,7 +41,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 
 app.controller('RegisterController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
-    $scope.header = true;
+    $scope.header = header;
     $scope.newUser = {};
 
     $scope.registerUser = function() {
@@ -56,7 +57,7 @@ app.controller('RegisterController', ['$scope', '$http', '$location', function($
 
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices', function($scope, $http, $location, UserServices) {
 
-    $scope.header = true;
+    $scope.header = header;
     $scope.userLogin = {};
 
     $scope.loginUser = function() {
@@ -64,6 +65,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices
         $http.post('/loginUser', $scope.userLogin).then(function(response) {
             console.log(response);
             if(response.status == 200) {
+                header = false;
                 globalUser = $scope.userLogin.username;
                 console.log(globalUser);
                 UserServices.getUserInfo($scope.userLogin);
@@ -77,7 +79,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserServices
 
 app.controller('DailyLogsController', ['$scope', '$http', 'UserServices', function($scope, $http, UserServices) {
 
-    $scope.header = false;
+    $scope.header = header;
 
     var userStuff = UserServices.userInfo;
     console.log('from daily logs:', userStuff)
@@ -87,14 +89,14 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserServices', functi
 
 app.controller('GoalsController', ['$scope', '$http', function($scope, $http) {
 
-    $scope.header = false;
+    $scope.header = header;
 
 
 }]);
 
 app.controller('MyFoodsController', ['$scope', '$http', function($scope, $http) {
 
-    $scope.header = false;
+    $scope.header = header;
     $scope.myFood = {};
     $scope.allmyFoods = [];
 
@@ -125,7 +127,7 @@ app.controller('MyFoodsController', ['$scope', '$http', function($scope, $http) 
 
 app.controller('StatsController', ['$scope', '$http', function($scope, $http) {
 
-    $scope.header = false;
+    $scope.header = header;
 
 
 }]);

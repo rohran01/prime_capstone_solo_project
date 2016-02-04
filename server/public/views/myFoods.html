@@ -1,6 +1,6 @@
-<h1>My Foods</h1>
 
 <div class="add-food-container">
+    <h2>Add Foods</h2>
     <div class="food-entry">
         <div class="food-input">
             <label for="name">Name</label><br>
@@ -37,7 +37,8 @@
 </div>
 
 <div class="foods-container">
-    <div class="foods-headers">
+    <h2>My Foods</h2>
+    <div class="foods-header">
         <ul>
             <li>Name</li>
             <li>Calories</li>
@@ -48,14 +49,16 @@
             <li>Net Carbs</li>
         </ul>
     </div>
-    <ul ng-repeat="food in allMyFoods">
-        <li>{{food.name}}</li>
-        <li>{{food.calories}}</li>
-        <li>{{food.fat}}</li>
-        <li>{{food.carbs}}</li>
-        <li>{{food.protein}}</li>
-        <li>{{food.fiber}}</li>
-        <li>{{food.netCarbs}}</li>
-    </ul>
-
+    <div class="clearfix"></div>
+    <div class="foods-list">
+        <ul ng-repeat="food in allMyFoods">
+            <li>{{food.name}}</li>
+            <li>{{food.calories}}</li>
+            <li>{{food.fat}}</li>
+            <li>{{food.carbs}}</li>
+            <li>{{food.protein}}</li>
+            <li>{{food.fiber}}</li>
+            <li>{{food.netCarbs}}</li>
+        </ul>
+    </div>
 </div>
