@@ -10,7 +10,7 @@ router.put('/addFood', function(request, response) {
     console.log('food', food);
     console.log('body', request.body);
 
-    Food.create({name: food.name, calories: food.calories}, function(err, createdFood) {
+    Food.create(food, function(err, createdFood) {
         console.log('Created food', createdFood);
         User.update(
             {username: name},
@@ -24,20 +24,20 @@ router.put('/addFood', function(request, response) {
             }
         )
     });
-
-
 });
 
-router.get('/myFoods', function(request, response) {
-    var searchName = (request.body.username);
-    User.findOne({username: searchName}, function(err, user) {
-        if (err) {
-            console.log(err);
-        } else {
-            response.json(user);
-        }
-    })
-});
+//router.get('/myFoods', function(request, response) {
+//    var searchName = (request.body.username);
+//    console.log('myFoods searchName', searchName);
+//    User.findOne({username: searchName}, function(err, userInfo) {
+//        if (err) {
+//            console.log(err);
+//        } else {
+//            console.log('my foods response', userInfo);
+//            response.json(userInfo);
+//        }
+//    })
+//});
 
 router.get('/', function(request, response) {
     var searchName = (request.query.username);

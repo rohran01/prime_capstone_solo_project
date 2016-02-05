@@ -1,7 +1,5 @@
 var app = angular.module('landingApp', ['ngRoute']);
 
-var globalUser;
-var header = true;
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
@@ -37,16 +35,26 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $locationProvider.html5Mode(true);
 }]);
 
+app.controller('MainController', ['$scope', 'UserService', function($scope, UserService) {
 
+    $scope.userInfo = UserService.userInfo;
 
-app.controller('RegisterController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+    $scope.headerTrue = function() {
+        //$scope.userInfo.data.isLoggedIn = true;
+    }
 
-    $scope.header = header;
+}]);
+
+app.controller('RegisterController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
+
     $scope.newUser = {};
+    //$scope.userInfo = UserService.userInfo;
+    //$scope.userInfo.data.isLoggedIn = false;
+
 
     $scope.registerUser = function() {
-        console.log('click!');
-        console.log($scope.newUser);
+        //console.log('click!');
+        //console.log($scope.newUser);
         $http.post('/registerUser', $scope.newUser).then(function(response) {
             if(response.status == 200){
                 $location.path('login');
@@ -57,21 +65,16 @@ app.controller('RegisterController', ['$scope', '$http', '$location', function($
 
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
 
-    $scope.header = header;
     $scope.userLogin = {};
     $scope.userInfo = UserService.userInfo;
 
 
 
     $scope.loginUser = function() {
-        console.log($scope.userLogin);
         $http.post('/loginUser', $scope.userLogin).then(function(response) {
-            console.log(response);
             if(response.status == 200) {
-                header = false;
-                globalUser = $scope.userLogin.username;
-                console.log(globalUser);
-                UserService.getUserInfo($scope.userLogin);
+                console.log('object to log in: ', $scope.userLogin.username);
+                UserService.getUserInfo($scope.userLogin.username);
                 $location.path('dailyLogs');
             } else {
                 $location.path('login');
@@ -82,8 +85,8 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserService'
 
 app.controller('DailyLogsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
-    $scope.header = header;
     $scope.userInfo = UserService.userInfo;
+
 
     var userStuff = UserService.userInfo;
     console.log('from daily logs:', userStuff)
@@ -91,47 +94,50 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
 }]);
 
-app.controller('GoalsController', ['$scope', '$http', function($scope, $http) {
+app.controller('GoalsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
-    $scope.header = header;
 
 
 }]);
 
-app.controller('MyFoodsController', ['$scope', '$http', function($scope, $http) {
+app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
-    $scope.header = header;
     $scope.myFood = {};
-    $scope.allmyFoods = [];
+    $scope.userInfo = UserService.userInfo;
+    console.log('user info from myFoods', $scope.userInfo);
+    $scope.allMyFoods = $scope.userInfo.data.myFoods;
 
     $scope.addMyFood = function() {
         console.log($scope.myFood);
-        var objectToSend = {username: globalUser, foodToAdd: $scope.myFood}
+        var objectToSend = {username: $scope.userInfo.data.username, foodToAdd: $scope.myFood};
 
         //make http post to add food to db
         $http.put('/userInfo/addFood', objectToSend).then(function(response) {
             console.log(response);
         });
 
-        //$scope.getMyFoods();
+        $scope.displayMyFoods();
+        UserService.getUserInfo($scope.userInfo.data.username);
     };
 
-    $scope.getMyFoods = function() {
-        console.log(globalUser);
+    $scope.displayMyFoods = function() {
         //make get call to db and fill $scope.allMyFoods
-        $http.get('/userInfo/myFoods', globalUser).then(function(response) {
-            console.log(response);
-        })
+        $scope.allMyFoods = $scope.userInfo.data.myFoods;
+        console.log('allMyFoods', $scope.allMyFoods);
+
+        UserService.getUserInfo($scope.userInfo.data.username);
+
     };
 
-    //$scope.getMyFoods();
+    $scope.displayMyFoods();
 
 
 }]);
 
-app.controller('StatsController', ['$scope', '$http', function($scope, $http) {
+app.controller('StatsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
-    $scope.header = header;
+    $scope.userInfo = UserService.userInfo;
+    $scope.userInfo.data.isLoggedIn = true;
 
 
 }]);
@@ -140,8 +146,9 @@ app.factory('UserService', ['$http', function($http) {
     var userInfo = {};
 
     function getUserInfo(loginObject) {
-        var username = {params: {username: loginObject.username}};
-        console.log('username:', username);
+        console.log('loginObject:', loginObject, typeof loginObject);
+        var username = {params: {username: loginObject}};
+        console.log('username:', username, typeof username);
         $http.get('/userInfo', username).then(function(response) {
             userInfo.data = response.data;
             userInfo.data.isLoggedIn = true;

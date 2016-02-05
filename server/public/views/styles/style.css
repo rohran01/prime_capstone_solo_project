@@ -45,6 +45,7 @@ body {
 .main-header{
     width: 100%;
     height: 250px;
+    margin-top: 0;
 }
 .logo-container {
     display: inline-block;
@@ -73,7 +74,7 @@ body {
 
 
 
-.header-container li, .totals-container li, .foods-header li {
+.header-container li, .totals-container li, .foods-header li, .foods-list li {
     list-style-type: none;
     display: inline-block;
     float: left;
