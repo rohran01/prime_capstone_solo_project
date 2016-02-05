@@ -2,10 +2,9 @@
     <img src="views/images/kale.jpg" class="bg" />
     <div class="date-container">
         <button>Next</button>
-        <h3>Date</h3>
+        <h3>{{displayDate}}</h3>
         <button>Prev</button>
     </div>
-    {{userInfo.data.isLoggedIn}}
     <div class="header-container">
         <ul>
             <li>Name</li>
@@ -18,7 +17,7 @@
         </ul>
     </div>
     <div class="clearfix"></div>
-    <div meal-container>
+    <div class="meal-container">
         <div class="breakfast-container">
             <h4>Breakfast</h4>
             <ul ng-repeat="breakfast in breakfasts">
@@ -33,7 +32,7 @@
                     <button ng-bind="breakfast.id">Remove</button>
                 </li>
             </ul>
-            <a>+ add to Breakfast</a>
+            <button class="add-to-meal" ng-click="addToMeal('Breakfast')">+ add to Breakfast</button>
         </div>
         <div class="clearfix"></div>
         <div class="lunch-container">
@@ -50,7 +49,7 @@
                     <button ng-bind="lunch.id">Remove</button>
                 </li>
             </ul>
-            <a>+ add to Lunch</a>
+            <button class="add-to-meal" ng-click="addToMeal('Lunch')">+ add to Lunch</button>
         </div>
         <div class="clearfix"></div>
         <div class="dinner-container">
@@ -67,7 +66,7 @@
                     <button ng-bind="dinner.id">Remove</button>
                 </li>
             </ul>
-            <a>+ add to Dinner</a>
+            <button class="add-to-meal" ng-click="addToMeal('Dinner')">+ add to Dinner</button>
         </div>
         <div class="clearfix"></div>
         <div class="snack-container">
@@ -84,7 +83,7 @@
                     <button ng-bind="snack.id">Remove</button>
                 </li>
             </ul>
-            <a>+ add to Snacks</a>
+            <button class="add-to-meal" ng-click="addToMeal('Snacks')">+ add to Snacks</button>
         </div>
         <div class="clearfix"></div>
         <div class="totals-container">
@@ -97,6 +96,48 @@
                 <li>{{total.fiber}}</li>
                 <li>{{total.netCarbs}}</li>
             </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<div ng-show="addWindow" class="add-box">
+    <div class="exit-button">
+        <button ng-click="addWindow = false">X</button>
+    </div><br>
+    <div class="add-box-header">
+        <h3>{{meal}}</h3>
+        <input type="search" ng-model="apiSearch" placeholder="Search API">
+        <button class="search-button">S</button>
+        <input type="search" ng-model="myFoodsSearch" placeholder="Search My Foods">
+        <button class="search-button" ng-click="searchMyFoods(myFoodsSearch)">S</button>
+
+    </div>
+    <hr>
+    <div class="food-choices">
+        <div class="food-choices-header">
+            <ul>
+                <li>Name</li>
+                <li>Calories</li>
+                <li>Fat</li>
+                <li>Carbs</li>
+                <li>Protein</li>
+                <li>Fiber</li>
+                <li>Net Carbs</li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div ng-repeat="food in searchFoods" class="food-choices-list">
+            <ul>
+                <li>{{food.name}}</li>
+                <li>{{food.calories}}</li>
+                <li>{{food.fat}}</li>
+                <li>{{food.carbs}}</li>
+                <li>{{food.protein}}</li>
+                <li>{{food.fiber}}</li>
+                <li>{{food.netCarbs}}</li>
+                <button class="addFood" ng-click="addFood(food._id)">Add</button>
+            </ul><br>
         </div>
         <div class="clearfix"></div>
     </div>

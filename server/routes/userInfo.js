@@ -5,49 +5,48 @@ var Food = require('../models/food').model;
 var router = express.Router();
 
 router.put('/addFood', function(request, response) {
-    var name = request.body.username;
+    //var name = request.body.username;
     var food = request.body.foodToAdd;
     console.log('food', food);
     console.log('body', request.body);
 
     Food.create(food, function(err, createdFood) {
-        console.log('Created food', createdFood);
+        if(createdFood == undefined) {
+            response.send('error');
+            return null;
+        } else {
+        //console.log('Created food', createdFood);
         User.update(
-            {username: name},
+            //{username: name},
             {$push: {myFoods: createdFood}},
             function (err, user) {
                 if (err) {
                     console.log('Error adding food', err);
-                } else {
-                    return response.sendStatus(200);
                 }
             }
-        )
+        )}
     });
 });
 
-//router.get('/myFoods', function(request, response) {
-//    var searchName = (request.body.username);
-//    console.log('myFoods searchName', searchName);
-//    User.findOne({username: searchName}, function(err, userInfo) {
-//        if (err) {
-//            console.log(err);
-//        } else {
-//            console.log('my foods response', userInfo);
-//            response.json(userInfo);
-//        }
-//    })
-//});
+router.put('/addLog', function(request, response) {
+    console.log(request.body);
+    var log = request.body;
+    User.update(
+        {$push: {logs: log}},
+        function (err, user) {
+            if (err) {
+                console.log('Error adding log', err);
+            } else {
+                console.log(user);
+                response.send(user);
+            }
+        }
+    )
+});
 
 router.get('/', function(request, response) {
-    var searchName = (request.query.username);
-    User.findOne({username: searchName}, function(err, user) {
-        if(err) {
-            console.log(err)
-        } else {
-            return response.json(user);
-        }
-    });
+    console.log('User: ', request.user);
+    response.send(request.user);
 });
 
 module.exports = router;

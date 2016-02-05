@@ -29,17 +29,28 @@ MongoDB.on('open', function() {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+
+//creates session
+app.use(session ({
+    secret: 'secret',
+    key: 'user',
+    resave: true,
+    saveUninitialized: false,
+    cookie: {maxAge: 60000, secure: false}
+}));
+
+
 //initiates passport
 app.use(passport.initialize());
 app.use(passport.session());
 
 //creates new strategy
-passport.use('local', new localStrategy ({
-    passReqToCallback: true,
-    usernameField: 'username'},
-    function(req, username, password, done) {
-    }
-));
+//passport.use('local', new localStrategy ({
+//    passReqToCallback: true,
+//    usernameField: 'username'},
+//    function(req, username, password, done) {
+//    }
+//));
 
 //authenticates users
 passport.serializeUser(function(user, done) {
@@ -49,8 +60,10 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
         if(err) {
+            console.log('errrr', err);
             done(err);
         } else {
+            console.log('Des', user);
             done(null, user);
         }
     })
@@ -78,15 +91,6 @@ passport.use('local', new localStrategy ({
                 })
             }
         })
-}));
-
-//creates session
-app.use(session ({
-    secret: 'secret',
-    key: 'user',
-    resave: true,
-    saveUninitialized: false,
-    cookie: {maxAge: 60000, secure: false}
 }));
 
 //app.use routes

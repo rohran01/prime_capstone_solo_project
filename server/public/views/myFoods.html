@@ -36,6 +36,7 @@
             <button ng-click="addMyFood()">Add Food</button>
         </div>
     </div>
+    <p>{{error}}</p>
 </div>
 
 <div class="foods-container">
@@ -52,8 +53,8 @@
         </ul>
     </div>
     <div class="clearfix"></div>
-    <div class="foods-list">
-        <ul ng-repeat="food in allMyFoods">
+    <div ng-repeat="food in allMyFoods" class="foods-list">
+        <ul>
             <li>{{food.name}}</li>
             <li>{{food.calories}}</li>
             <li>{{food.fat}}</li>
@@ -61,7 +62,7 @@
             <li>{{food.protein}}</li>
             <li>{{food.fiber}}</li>
             <li>{{food.netCarbs}}</li>
-        </ul>
+        </ul><br>
     </div>
     <div class="clearfix"></div>
 </div>
