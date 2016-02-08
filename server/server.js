@@ -36,7 +36,7 @@ app.use(session ({
     key: 'user',
     resave: true,
     saveUninitialized: false,
-    cookie: {maxAge: 60000, secure: false}
+    cookie: {maxAge: 1800000, secure: false}
 }));
 
 
@@ -63,7 +63,6 @@ passport.deserializeUser(function(id, done) {
             console.log('errrr', err);
             done(err);
         } else {
-            console.log('Des', user);
             done(null, user);
         }
     })

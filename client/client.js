@@ -36,7 +36,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 }]);
 
 app.controller('MainController', ['$scope', 'UserService', function($scope, UserService) {
-
+    $scope.userInfo = UserService.userInfo;
 }]);
 
 app.controller('RegisterController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
@@ -72,8 +72,8 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserService'
 app.controller('DailyLogsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
     $scope.userInfo = UserService.userInfo;
-    $scope.date = new Date();
-    $scope.displayDate = $scope.date.toDateString();
+    $scope.date = UserService.userInfo.currentDate;
+    $scope.displayDate = UserService.userInfo.currentDate.toDateString();
     $scope.meal = '';
     $scope.addWindow = false;
     $scope.searchFoods = [];
@@ -83,73 +83,76 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
     $scope.dinners = [];
     $scope.snacks = [];
 
-    function displayLogs() {
-        UserService.getUserInfo();
+    function updateDisplay() {
 
-        console.log('user object inside data:', $scope.userInfo);
-        console.log('should be user object:', $scope.userInfo.data);
+        UserService.getUserInfo().then(function(response) {
+            displayLogs();
+        })
+    }
+
+    function displayLogs() {
+
         var logs = UserService.userInfo.data.logs;
-        $scope.date = $scope.date.toISOString();
+        $scope.date = UserService.userInfo.currentDate.toISOString();
         $scope.date = $scope.date.substring(0,10);
-        console.log('date nbeing used', $scope.date);
+        //console.log('date being used', $scope.date);
 
         var logsForToday = [];
         $scope.breakfasts = [];
         $scope.lunches = [];
         $scope.dinners = [];
         $scope.snacks = [];
-        console.log('logs array:', logs);
+        //console.log('logs array:', logs);
 
 
         for (var i = 0; i < logs.length; i++) {
-            console.log($scope.date);
-            console.log(logs[i].date);
+            //console.log($scope.date);
+            //console.log(logs[i].date);
             var logDate = logs[i].date;
             logDate = logDate.substring(0,10);
-            console.log(logDate);
+            //console.log(logDate);
             if (logDate== $scope.date) {
                 logsForToday.push(logs[i]);
             }
         }
 
-        console.log('filled:', logsForToday);
-
 
         for (var i = 0; i < logsForToday.length; i++) {
-            if (logsForToday[i] === 'Breakfast') {
-                $scope.breakfasts.push(logsForToday[i]);
-            } else if (logsForToday[i] === 'Lunch') {
-                $scope.lunches.push(logsForToday[i]);
-            } else if (logsForToday[i] === 'Dinner') {
-                $scope.dinners.push(logsForToday[i]);
-            } else if (logsForToday[i] === 'Snacks') {
-                $scope.snacks.push(logsForToday[i]);
+            if (logsForToday[i].meal === 'Breakfast') {
+                $scope.breakfasts.push(logsForToday[i].food);
+            } else if (logsForToday[i].meal === 'Lunch') {
+                $scope.lunches.push(logsForToday[i].food);
+            } else if (logsForToday[i].meal === 'Dinner') {
+                $scope.dinners.push(logsForToday[i].food);
+            } else if (logsForToday[i].meal === 'Snacks') {
+                $scope.snacks.push(logsForToday[i].food);
             }
+            console.log('snacks for today:', $scope.snacks);
 
         }
-        console.log('breakfasts:', $scope.breakfasts);
     };
 
 
     $scope.addToMeal = function(input) {
         $scope.meal = input;
         $scope.addWindow = true;
+        console.log($scope.addWindow);
     };
 
     $scope.searchMyFoods = function(searchTerm) {
         $scope.searchFoods = [];
-        var arrayOfMyFoods = $scope.userInfo.data.myFoods;
+        var arrayOfMyFoods = UserService.userInfo.data.myFoods;
         for (var i = 0; i< arrayOfMyFoods.length; i++) {
             if (arrayOfMyFoods[i].name.toLowerCase() === searchTerm.toLowerCase()) {
-                console.log('match', arrayOfMyFoods[i]);
+                //console.log('match', arrayOfMyFoods[i]);
                 $scope.searchFoods.push(arrayOfMyFoods[i]);
             }
-            console.log($scope.searchFoods);
+            //console.log($scope.searchFoods);
         }
     };
 
     $scope.addFood = function(foodId) {
-        var arrayOfMyFoods = $scope.userInfo.data.myFoods;
+        var arrayOfMyFoods = UserService.userInfo.data.myFoods;
         for (var i = 0; i< arrayOfMyFoods.length; i++) {
             if (arrayOfMyFoods[i]._id === foodId) {
                 logFood(arrayOfMyFoods[i]);
@@ -159,16 +162,33 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
     function logFood(foodToAdd) {
         //create object to post
-        var logToPut = {date: $scope.date,
+        //console.log('foodToAdd:', foodToAdd);
+        var logToPut = {username: UserService.userInfo.data.username, log: {date: $scope.date,
                                 food: foodToAdd,
-                                meal: $scope.meal};
+                                meal: $scope.meal}};
         $http.put('/userInfo/addLog', logToPut).then(function (response) {
-            console.log(response);
+            console.log('addLog response:',response);
+            updateDisplay();
+
         })
     };
 
-    UserService.getUserInfo();
-    displayLogs()
+    $scope.prevDay = function() {
+        UserService.prevDay();
+        updateDisplay();
+
+    };
+
+    $scope.nextDay = function() {
+        console.log($scope.date);
+        UserService.nextDay();
+        updateDisplay();
+        console.log(UserService.userInfo.currentDate);
+
+    };
+
+    updateDisplay();
+    //UserService.getUserInfo();
 
 
 
@@ -227,20 +247,40 @@ app.controller('StatsController', ['$scope', '$http', 'UserService', function($s
 }]);
 
 app.factory('UserService', ['$http', function($http) {
-    console.log("is this working");
     var userInfo = {};
+    var today = new Date();
+    userInfo.currentDate = today;
+
 
     function getUserInfo() {
+
         console.log('getUserInfo called');
-        $http.get('/userInfo').then(function(response) {
-            userInfo.data = response.data;
+        return $http.get('/userInfo').success(function(response) {
+            console.log(response);
+            userInfo.data = response;
             userInfo.data.isLoggedIn = true;
+            return response;
         })
-    }
+    };
+
+    function prevDay() {
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        userInfo.currentDate = yesterday;
+    };
+
+    function nextDay() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        userInfo.currentDate = tomorrow;
+        console.log('inside:', userInfo.currentDate);
+    };
 
     return {
         getUserInfo: getUserInfo,
-        userInfo: userInfo
+        userInfo: userInfo,
+        prevDay: prevDay,
+        nextDay: nextDay
     }
 
 }]);

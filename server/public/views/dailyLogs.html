@@ -1,9 +1,11 @@
+
 <div class="log-container">
+    <div ng-show="addWindow" class="black_overlay"></div>
     <img src="views/images/kale.jpg" class="bg" />
     <div class="date-container">
-        <button>Next</button>
+        <button ng-click="prevDay()">Prev</button>
         <h3>{{displayDate}}</h3>
-        <button>Prev</button>
+        <button ng-click="nextDay()">Next</button>
     </div>
     <div class="header-container">
         <ul>
@@ -18,77 +20,69 @@
     </div>
     <div class="clearfix"></div>
     <div class="meal-container">
-        <div class="breakfast-container">
+        <div class="meal-container">
             <h4>Breakfast</h4>
             <ul ng-repeat="breakfast in breakfasts">
-                <li>
-                    <p>{{breakfast.name}}</p>
-                    <p>{{breakfast.calories}}</p>
-                    <p>{{breakfast.fat}}</p>
-                    <p>{{breakfast.carbs}}</p>
-                    <p>{{breakfast.protein}}</p>
-                    <p>{{breakfast.fiber}}</p>
-                    <p>{{breakfast.netCarbs}}</p>
-                    <button ng-bind="breakfast.id">Remove</button>
-                </li>
+                <li>{{breakfast.name}}</li>
+                <li>{{breakfast.calories}}</li>
+                <li>{{breakfast.fat}}</li>
+                <li>{{breakfast.carbs}}</li>
+                <li>{{breakfast.protein}}</li>
+                <li>{{breakfast.fiber}}</li>
+                <li>{{breakfast.netCarbs}}</li>
+                <li><button ng-bind="breakfast.id">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Breakfast')">+ add to Breakfast</button>
         </div>
         <div class="clearfix"></div>
-        <div class="lunch-container">
+        <div class="meal-container">
             <h4>Lunch</h4>
             <ul ng-repeat="lunch in lunches">
-                <li>
-                    <p>{{lunch.name}}</p>
-                    <p>{{lunch.calories}}</p>
-                    <p>{{lunch.fat}}</p>
-                    <p>{{lunch.carbs}}</p>
-                    <p>{{lunch.protein}}</p>
-                    <p>{{lunch.fiber}}</p>
-                    <p>{{lunch.netCarbs}}</p>
-                    <button ng-bind="lunch.id">Remove</button>
-                </li>
+                <li>{{lunch.name}}</li>
+                <li>{{lunch.calories}}</li>
+                <li>{{lunch.fat}}</li>
+                <li>{{lunch.carbs}}</li>
+                <li>{{lunch.protein}}</li>
+                <li>{{lunch.fiber}}</li>
+                <li>{{lunch.netCarbs}}</li>
+                <li><button ng-bind="lunch.id">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Lunch')">+ add to Lunch</button>
         </div>
         <div class="clearfix"></div>
-        <div class="dinner-container">
+        <div class="meal-container">
             <h4>Dinner</h4>
             <ul ng-repeat="dinner in dinners">
-                <li>
-                    <p>{{dinner.name}}</p>
-                    <p>{{dinner.calories}}</p>
-                    <p>{{dinner.fat}}</p>
-                    <p>{{dinner.carbs}}</p>
-                    <p>{{dinner.protein}}</p>
-                    <p>{{dinner.fiber}}</p>
-                    <p>{{dinner.netCarbs}}</p>
-                    <button ng-bind="dinner.id">Remove</button>
-                </li>
+                <li>{{dinner.name}}</li>
+                <li>{{dinner.calories}}</li>
+                <li>{{dinner.fat}}</li>
+                <li>{{dinner.carbs}}</li>
+                <li>{{dinner.protein}}</li>
+                <li>{{dinner.fiber}}</li>
+                <li>{{dinner.netCarbs}}</li>
+                <li><button ng-bind="dinner.id">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Dinner')">+ add to Dinner</button>
         </div>
         <div class="clearfix"></div>
-        <div class="snack-container">
+        <div class="meal-container">
             <h4>Snacks</h4>
             <ul ng-repeat="snack in snacks">
-                <li>
-                    <p>{{snack.name}}</p>
-                    <p>{{snack.calories}}</p>
-                    <p>{{snack.fat}}</p>
-                    <p>{{snack.carbs}}</p>
-                    <p>{{snack.protein}}</p>
-                    <p>{{snack.fiber}}</p>
-                    <p>{{snack.netCarbs}}</p>
-                    <button ng-bind="snack.id">Remove</button>
-                </li>
+                <li>{{snack.name}}</li>
+                <li>{{snack.calories}}</li>
+                <li>{{snack.fat}}</li>
+                <li>{{snack.carbs}}</li>
+                <li>{{snack.protein}}</li>
+                <li>{{snack.fiber}}</li>
+                <li>{{snack.netCarbs}}</li>
+                <li><button ng-bind="snack.id">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Snacks')">+ add to Snacks</button>
         </div>
         <div class="clearfix"></div>
         <div class="totals-container">
             <ul>
-                <li class="total">Total</li>
+                <li> class="total">Total</li>
                 <li>{{total.calories}}</li>
                 <li>{{total.fat}}</li>
                 <li>{{total.carbs}}</li>
@@ -111,7 +105,6 @@
         <button class="search-button">S</button>
         <input type="search" ng-model="myFoodsSearch" placeholder="Search My Foods">
         <button class="search-button" ng-click="searchMyFoods(myFoodsSearch)">S</button>
-
     </div>
     <hr>
     <div class="food-choices">
@@ -142,3 +135,4 @@
         <div class="clearfix"></div>
     </div>
 </div>
+

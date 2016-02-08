@@ -33,10 +33,33 @@ body {
     text-align: center;
 }
 
-
-
 .login-header, .add-box {
     width: 60%;
+}
+.add-box {
+    display: block;
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    height: 400px;
+    padding: 10px;
+    z-index: 10002;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.black_overlay{
+    display: block;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 1000px;
+    background-color: black;
+    z-index: 1001;
+    -moz-opacity: 0.6;
+    opacity:.60;
+    filter: alpha(opacity=60);
+    overflow: hidden;
 }
 
 .logo {
@@ -76,7 +99,7 @@ body {
 
 
 
-.header-container li, .totals-container li, .foods-header li, .foods-list li, .food-choices-header li, .food-choices-list li{
+.header-container li, .totals-container li, .foods-header li, .foods-list li, .food-choices-header li, .food-choices-list li, .meal-container li{
     list-style-type: none;
     display: inline-block;
     float: left;
