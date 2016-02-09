@@ -39,7 +39,7 @@ body {
 .add-box {
     display: block;
     position: fixed;
-    top: 25%;
+    top: 10%;
     left: 25%;
     height: 400px;
     padding: 10px;

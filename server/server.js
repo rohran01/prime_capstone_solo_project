@@ -8,6 +8,7 @@ var index = require('./routes/index');
 var register = require('./routes/register');
 var login = require('./routes/login');
 var userInfo = require('./routes/userInfo');
+var logout = require('./routes/logout');
 
 var app = express();
 var localStrategy = require('passport-local').Strategy;
@@ -93,6 +94,7 @@ passport.use('local', new localStrategy ({
 }));
 
 //app.use routes
+app.use('/logout', logout);
 app.use('/userInfo', userInfo);
 app.use('/loginUser', login);
 app.use('/registerUser', register);

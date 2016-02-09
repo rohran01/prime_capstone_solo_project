@@ -35,8 +35,18 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     $locationProvider.html5Mode(true);
 }]);
 
-app.controller('MainController', ['$scope', 'UserService', function($scope, UserService) {
+app.controller('MainController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
     $scope.userInfo = UserService.userInfo;
+    $scope.logout = function() {
+        console.log('logout button clicked');
+        $http.get('/logout').then(function(response) {
+            console.log('logout response:', response.status);
+            if(response.status == 200) {
+                UserService.userInfo.data.isLoggedIn = false;
+                $location.path('login');
+            }
+        })
+    }
 }]);
 
 app.controller('RegisterController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
@@ -54,7 +64,6 @@ app.controller('RegisterController', ['$scope', '$http', '$location', 'UserServi
 
 app.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
 
-    console.log("what!?", $scope.userInfo);
     $scope.userLogin ={};
 
     $scope.loginUser = function() {
@@ -82,75 +91,90 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
     $scope.lunches = [];
     $scope.dinners = [];
     $scope.snacks = [];
+    $scope.total = {};
 
+    //pulls latest user data from DB and then updates DOM
     function updateDisplay() {
-
         UserService.getUserInfo().then(function(response) {
             displayLogs();
         })
     }
 
+    //updates DOM with current user info
     function displayLogs() {
 
+        //resets macronutrient numbers for tabulation later in function
+        $scope.total = {calories: 0,
+                        fat: 0,
+                        carbs: 0,
+                        protein: 0,
+                        fiber: 0,
+                        netCarbs: 0};
+
+        //pulls logs from userInfo object
         var logs = UserService.userInfo.data.logs;
         $scope.date = UserService.userInfo.currentDate.toISOString();
         $scope.date = $scope.date.substring(0,10);
-        //console.log('date being used', $scope.date);
 
+        //creates empty arrays for sorting
         var logsForToday = [];
         $scope.breakfasts = [];
         $scope.lunches = [];
         $scope.dinners = [];
         $scope.snacks = [];
-        //console.log('logs array:', logs);
 
-
+        //filters out logs that do not have the date currently chosen
         for (var i = 0; i < logs.length; i++) {
-            //console.log($scope.date);
-            //console.log(logs[i].date);
             var logDate = logs[i].date;
             logDate = logDate.substring(0,10);
-            //console.log(logDate);
             if (logDate== $scope.date) {
                 logsForToday.push(logs[i]);
             }
         }
 
-
+        //cycles through all logs for the chosen day
         for (var i = 0; i < logsForToday.length; i++) {
-            if (logsForToday[i].meal === 'Breakfast') {
-                $scope.breakfasts.push(logsForToday[i].food);
-            } else if (logsForToday[i].meal === 'Lunch') {
-                $scope.lunches.push(logsForToday[i].food);
-            } else if (logsForToday[i].meal === 'Dinner') {
-                $scope.dinners.push(logsForToday[i].food);
-            } else if (logsForToday[i].meal === 'Snacks') {
-                $scope.snacks.push(logsForToday[i].food);
-            }
-            console.log('snacks for today:', $scope.snacks);
 
+            //tabulates totals for each macronutrient
+            $scope.total.calories += logsForToday[i].food.calories;
+            $scope.total.fat += logsForToday[i].food.fat;
+            $scope.total.carbs += logsForToday[i].food.carbs;
+            $scope.total.protein += logsForToday[i].food.protein;
+            $scope.total.fiber += logsForToday[i].food.fiber;
+            $scope.total.netCarbs += (logsForToday[i].food.carbs - logsForToday[i].food.fiber);
+
+            //sorts logged foods into categories for display on DOM
+            if (logsForToday[i].meal === 'Breakfast') {
+                console.log('breakfast log example:',logsForToday[i]);
+                $scope.breakfasts.push(logsForToday[i]);
+            } else if (logsForToday[i].meal === 'Lunch') {
+                $scope.lunches.push(logsForToday[i]);
+            } else if (logsForToday[i].meal === 'Dinner') {
+                $scope.dinners.push(logsForToday[i]);
+            } else if (logsForToday[i].meal === 'Snacks') {
+                $scope.snacks.push(logsForToday[i]);
+            }
         }
     };
 
-
+    //displays add log menu and appropriates the meal selected to the logged item
     $scope.addToMeal = function(input) {
         $scope.meal = input;
         $scope.addWindow = true;
-        console.log($scope.addWindow);
     };
 
+    //searches the user's myFoods
     $scope.searchMyFoods = function(searchTerm) {
         $scope.searchFoods = [];
         var arrayOfMyFoods = UserService.userInfo.data.myFoods;
         for (var i = 0; i< arrayOfMyFoods.length; i++) {
             if (arrayOfMyFoods[i].name.toLowerCase() === searchTerm.toLowerCase()) {
-                //console.log('match', arrayOfMyFoods[i]);
                 $scope.searchFoods.push(arrayOfMyFoods[i]);
             }
-            //console.log($scope.searchFoods);
         }
     };
 
+    //cycles through user's myFoods and passes the one selected to the logFood function
     $scope.addFood = function(foodId) {
         var arrayOfMyFoods = UserService.userInfo.data.myFoods;
         for (var i = 0; i< arrayOfMyFoods.length; i++) {
@@ -160,9 +184,19 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
         }
     };
 
+    $scope.removeLog = function(logId) {
+        console.log('clicked:', logId);
+
+
+        $http.delete('/userInfo/removeLog/' + logId).then(function(response) {
+            console.log(response);
+            updateDisplay();
+        });
+
+    };
+
+    //adds the selected food to the user's logs
     function logFood(foodToAdd) {
-        //create object to post
-        //console.log('foodToAdd:', foodToAdd);
         var logToPut = {username: UserService.userInfo.data.username, log: {date: $scope.date,
                                 food: foodToAdd,
                                 meal: $scope.meal}};
@@ -173,23 +207,22 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
         })
     };
 
-    $scope.prevDay = function() {
-        UserService.prevDay();
-        updateDisplay();
+    //$scope.prevDay = function() {
+    //    UserService.prevDay();
+    //    updateDisplay();
+    //
+    //};
+    //
+    //$scope.nextDay = function() {
+    //    console.log($scope.date);
+    //    UserService.nextDay();
+    //    updateDisplay();
+    //    console.log(UserService.userInfo.currentDate);
+    //
+    //};
 
-    };
-
-    $scope.nextDay = function() {
-        console.log($scope.date);
-        UserService.nextDay();
-        updateDisplay();
-        console.log(UserService.userInfo.currentDate);
-
-    };
-
+    //pulls user's info and updates DOM on screen load
     updateDisplay();
-    //UserService.getUserInfo();
-
 
 
 }]);

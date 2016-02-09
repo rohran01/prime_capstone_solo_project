@@ -23,14 +23,14 @@
         <div class="meal-container">
             <h4>Breakfast</h4>
             <ul ng-repeat="breakfast in breakfasts">
-                <li>{{breakfast.name}}</li>
-                <li>{{breakfast.calories}}</li>
-                <li>{{breakfast.fat}}</li>
-                <li>{{breakfast.carbs}}</li>
-                <li>{{breakfast.protein}}</li>
-                <li>{{breakfast.fiber}}</li>
-                <li>{{breakfast.netCarbs}}</li>
-                <li><button ng-bind="breakfast.id">Remove</button></li><br>
+                <li>{{breakfast.food.name}}</li>
+                <li>{{breakfast.food.calories}}</li>
+                <li>{{breakfast.food.fat}}</li>
+                <li>{{breakfast.food.carbs}}</li>
+                <li>{{breakfast.food.protein}}</li>
+                <li>{{breakfast.food.fiber}}</li>
+                <li>{{breakfast.food.netCarbs}}</li>
+                <li><button ng-click="removeLog(breakfast._id)">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Breakfast')">+ add to Breakfast</button>
         </div>
@@ -38,14 +38,14 @@
         <div class="meal-container">
             <h4>Lunch</h4>
             <ul ng-repeat="lunch in lunches">
-                <li>{{lunch.name}}</li>
-                <li>{{lunch.calories}}</li>
-                <li>{{lunch.fat}}</li>
-                <li>{{lunch.carbs}}</li>
-                <li>{{lunch.protein}}</li>
-                <li>{{lunch.fiber}}</li>
-                <li>{{lunch.netCarbs}}</li>
-                <li><button ng-bind="lunch.id">Remove</button></li><br>
+                <li>{{lunch.food.name}}</li>
+                <li>{{lunch.food.calories}}</li>
+                <li>{{lunch.food.fat}}</li>
+                <li>{{lunch.food.carbs}}</li>
+                <li>{{lunch.food.protein}}</li>
+                <li>{{lunch.food.fiber}}</li>
+                <li>{{lunch.food.netCarbs}}</li>
+                <li><button ng-click="removeLog(lunch._id)">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Lunch')">+ add to Lunch</button>
         </div>
@@ -53,14 +53,14 @@
         <div class="meal-container">
             <h4>Dinner</h4>
             <ul ng-repeat="dinner in dinners">
-                <li>{{dinner.name}}</li>
-                <li>{{dinner.calories}}</li>
-                <li>{{dinner.fat}}</li>
-                <li>{{dinner.carbs}}</li>
-                <li>{{dinner.protein}}</li>
-                <li>{{dinner.fiber}}</li>
-                <li>{{dinner.netCarbs}}</li>
-                <li><button ng-bind="dinner.id">Remove</button></li><br>
+                <li>{{dinner.food.name}}</li>
+                <li>{{dinner.food.calories}}</li>
+                <li>{{dinner.food.fat}}</li>
+                <li>{{dinner.food.carbs}}</li>
+                <li>{{dinner.food.protein}}</li>
+                <li>{{dinner.food.fiber}}</li>
+                <li>{{dinner.food.netCarbs}}</li>
+                <li><button ng-click="removeLog(dinner._id)">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Dinner')">+ add to Dinner</button>
         </div>
@@ -68,21 +68,21 @@
         <div class="meal-container">
             <h4>Snacks</h4>
             <ul ng-repeat="snack in snacks">
-                <li>{{snack.name}}</li>
-                <li>{{snack.calories}}</li>
-                <li>{{snack.fat}}</li>
-                <li>{{snack.carbs}}</li>
-                <li>{{snack.protein}}</li>
-                <li>{{snack.fiber}}</li>
-                <li>{{snack.netCarbs}}</li>
-                <li><button ng-bind="snack.id">Remove</button></li><br>
+                <li>{{snack.food.name}}</li>
+                <li>{{snack.food.calories}}</li>
+                <li>{{snack.food.fat}}</li>
+                <li>{{snack.food.carbs}}</li>
+                <li>{{snack.food.protein}}</li>
+                <li>{{snack.food.fiber}}</li>
+                <li>{{snack.food.netCarbs}}</li>
+                <li><button ng-click="removeLog(snack._id)">Remove</button></li><br>
             </ul>
             <button class="add-to-meal" ng-click="addToMeal('Snacks')">+ add to Snacks</button>
         </div>
         <div class="clearfix"></div>
         <div class="totals-container">
             <ul>
-                <li> class="total">Total</li>
+                <li class="total">Totals:</li>
                 <li>{{total.calories}}</li>
                 <li>{{total.fat}}</li>
                 <li>{{total.carbs}}</li>

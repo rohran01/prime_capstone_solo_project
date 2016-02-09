@@ -48,6 +48,29 @@ router.put('/addLog', function(request, response) {
     )
 });
 
+router.delete('/removeLog/:id', function(request, response) {
+    var userId = request.user._id;
+    var logId = request.params.id;
+
+    User.findById(userId, function(err, user) {
+        console.log(user);
+        if(err) {
+            console.log('log deletion error:', err);
+            response.sendStatus(401);
+        } else {
+            user.logs.pull({_id: logId});
+            user.save(function(err, result) {
+                if(err) {
+                    console.log('save error:', err);
+                } else {
+                    console.log(result);
+                }
+            });
+            response.send('deletion complete')
+        }
+    })
+});
+
 router.get('/', function(request, response) {
     console.log('User: ', request.user);
     response.send(request.user);
