@@ -287,7 +287,6 @@ app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function(
         console.log('remove clicke', foodId);
         $http.delete('/userInfo/removeMyFood/' + foodId).then(UserService.getUserInfo).then(function(response) {
             $scope.allMyFoods = UserService.userInfo.data.myFoods;
-
         })
     };
 
@@ -307,8 +306,6 @@ app.factory('UserService', ['$http', function($http) {
     var userInfo = {};
 
     function getUserInfo() {
-
-        console.log('getUserInfo called');
         return $http.get('/userInfo').success(function(response) {
             //console.log(response);
             userInfo.data = response;

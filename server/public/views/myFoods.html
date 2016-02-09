@@ -1,9 +1,47 @@
-
-<div class="add-food-container">
+<div>
     <img src="views/images/eggs.jpg" class="bg" />
+    <div ng-show="addWindow" class="black-overlay"></div>
+    <div class="foods-container">
+        <h2>My Foods</h2>
+        <button class="add-food" ng-click="addWindow = true">Add Food</button>
+        <div class="clearfix"></div>
+        <div class="foods-header">
+            <ul>
+                <li>Name</li>
+                <li>Calories</li>
+                <li>Fat</li>
+                <li>Carbs</li>
+                <li>Protein</li>
+                <li>Fiber</li>
+                <li>Net Carbs</li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div ng-repeat="food in allMyFoods" class="foods-list">
+            <h4>{{food.name}}</h4>
+            <div class="clearfix"></div>
+            <ul>
+                <li><div> </div></li>
+                <li>{{food.calories}}</li>
+                <li>{{food.fat}}</li>
+                <li>{{food.carbs}}</li>
+                <li>{{food.protein}}</li>
+                <li>{{food.fiber}}</li>
+                <li>{{food.netCarbs}}</li>
+                <li><i ng-click="removeMyFood(food._id)" class="fa fa-trash"></i></li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
 
+<div ng-show="addWindow" class="add-food-container add-box">
+    <div class="exit-button">
+        <i ng-click="addWindow = false" class="fa fa-times"></i>
+    </div><br>
     <h2>Add Foods</h2>
-    <div class="food-entry">
+
+    <div  class="food-entry">
         <div class="food-input">
             <label for="name">Name</label><br>
             <input type="text" ng-model="myFood.name" id="name" />
@@ -37,33 +75,4 @@
         </div>
     </div>
     <p>{{error}}</p>
-</div>
-
-<div class="foods-container">
-    <h2>My Foods</h2>
-    <div class="foods-header">
-        <ul>
-            <li>Name</li>
-            <li>Calories</li>
-            <li>Fat</li>
-            <li>Carbs</li>
-            <li>Protein</li>
-            <li>Fiber</li>
-            <li>Net Carbs</li>
-        </ul>
-    </div>
-    <div class="clearfix"></div>
-    <div ng-repeat="food in allMyFoods" class="foods-list">
-        <ul>
-            <li>{{food.name}}</li>
-            <li>{{food.calories}}</li>
-            <li>{{food.fat}}</li>
-            <li>{{food.carbs}}</li>
-            <li>{{food.protein}}</li>
-            <li>{{food.fiber}}</li>
-            <li>{{food.netCarbs}}</li>
-            <li><button ng-click="removeMyFood(food._id)">Remove</button></li>
-        </ul><br>
-    </div>
-    <div class="clearfix"></div>
 </div>
