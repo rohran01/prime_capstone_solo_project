@@ -80,9 +80,9 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserService'
 
 app.controller('DailyLogsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
-    $scope.userInfo = UserService.userInfo;
     var dateConstant = new Date();
     var dateToChange = new Date();
+    $scope.userInfo = UserService.userInfo;
     $scope.displayDate = dateConstant.toDateString();
     $scope.meal = '';
     $scope.addWindow = false;
@@ -267,38 +267,31 @@ app.controller('GoalsController', ['$scope', '$http', 'UserService', function($s
 app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
     $scope.myFood = {};
-    $scope.userInfo = UserService.userInfo;
-    //console.log('user info from myFoods', $scope.userInfo);
-    $scope.allMyFoods = $scope.userInfo.data.myFoods;
+    $scope.allMyFoods = UserService.userInfo.data.myFoods;
 
     $scope.addMyFood = function() {
         $scope.error = '';
-        //console.log($scope.myFood);
-        var objectToSend = {username: $scope.userInfo.data.username, foodToAdd: $scope.myFood};
+        var objectToSend = {username: UserService.userInfo.data.username, foodToAdd: $scope.myFood};
 
         //make http post to add food to db
-        $http.put('/userInfo/addFood', objectToSend).then(function(response) {
-            //console.log('add food response:', response);
-
+        $http.put('/userInfo/addFood', objectToSend).then(UserService.getUserInfo).then(function(response) {
+            $scope.allMyFoods = UserService.userInfo.data.myFoods;
+            console.log('add food response:', response);
             if (response.data == 'error') {
                 $scope.error = 'Could not add that food. Please make sure all blanks are filled in.';
-                //console.log($scope.error)
             }
-            UserService.getUserInfo($scope.userInfo.data.username);
-            $scope.displayMyFoods();
         });
     };
 
-    $scope.displayMyFoods = function() {
-        //make get call to db and fill $scope.allMyFoods
-        $scope.allMyFoods = $scope.userInfo.data.myFoods;
-        //console.log('allMyFoods', $scope.allMyFoods);
+    $scope.removeMyFood = function(foodId) {
+        console.log('remove clicke', foodId);
+        $http.delete('/userInfo/removeMyFood/' + foodId).then(UserService.getUserInfo).then(function(response) {
+            $scope.allMyFoods = UserService.userInfo.data.myFoods;
 
-        UserService.getUserInfo();
-
+        })
     };
 
-    $scope.displayMyFoods();
+    UserService.getUserInfo;
 
 }]);
 
@@ -312,13 +305,10 @@ app.controller('StatsController', ['$scope', '$http', 'UserService', function($s
 
 app.factory('UserService', ['$http', function($http) {
     var userInfo = {};
-    //var today = new Date();
-    //userInfo.currentDate = today;
-
 
     function getUserInfo() {
 
-        //console.log('getUserInfo called');
+        console.log('getUserInfo called');
         return $http.get('/userInfo').success(function(response) {
             //console.log(response);
             userInfo.data = response;
@@ -327,24 +317,9 @@ app.factory('UserService', ['$http', function($http) {
         })
     };
 
-    //function prevDay() {
-    //    var yesterday = new Date();
-    //    yesterday.setDate(yesterday.getDate() - 1);
-    //    userInfo.currentDate = yesterday;
-    //};
-    //
-    //function nextDay() {
-    //    var tomorrow = new Date();
-    //    tomorrow.setDate(tomorrow.getDate() + 1);
-    //    userInfo.currentDate = tomorrow;
-    //    console.log('inside:', userInfo.currentDate);
-    //};
-
     return {
         getUserInfo: getUserInfo,
         userInfo: userInfo
-        //prevDay: prevDay,
-        //nextDay: nextDay
     }
 
 }]);
