@@ -102,7 +102,7 @@
     <div class="add-box-header">
         <h3>{{meal}}</h3>
         <input type="search" ng-model="apiSearch" placeholder="Search API">
-        <button class="search-button">S</button>
+        <button class="search-button" ng-click="searchAPI(apiSearch)">S</button>
         <input type="search" ng-model="myFoodsSearch" placeholder="Search My Foods">
         <button class="search-button" ng-click="searchMyFoods(myFoodsSearch)">S</button>
     </div>
@@ -129,7 +129,7 @@
                 <li>{{food.protein}}</li>
                 <li>{{food.fiber}}</li>
                 <li>{{food.netCarbs}}</li>
-                <button class="addFood" ng-click="addFood(food._id)">Add</button>
+                <button class="addFood" ng-click="logFood(food)">Add</button>
             </ul><br>
         </div>
         <div class="clearfix"></div>

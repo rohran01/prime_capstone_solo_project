@@ -81,8 +81,9 @@ app.controller('LoginController', ['$scope', '$http', '$location', 'UserService'
 app.controller('DailyLogsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
     $scope.userInfo = UserService.userInfo;
-    $scope.date = UserService.userInfo.currentDate;
-    $scope.displayDate = UserService.userInfo.currentDate.toDateString();
+    $scope.date = new Date();
+    var dateToChange = new Date();
+    $scope.displayDate = $scope.date.toDateString();
     $scope.meal = '';
     $scope.addWindow = false;
     $scope.searchFoods = [];
@@ -113,7 +114,7 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
         //pulls logs from userInfo object
         var logs = UserService.userInfo.data.logs;
-        $scope.date = UserService.userInfo.currentDate.toISOString();
+        $scope.date = $scope.date.toISOString();
         $scope.date = $scope.date.substring(0,10);
 
         //creates empty arrays for sorting
@@ -145,7 +146,6 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
             //sorts logged foods into categories for display on DOM
             if (logsForToday[i].meal === 'Breakfast') {
-                console.log('breakfast log example:',logsForToday[i]);
                 $scope.breakfasts.push(logsForToday[i]);
             } else if (logsForToday[i].meal === 'Lunch') {
                 $scope.lunches.push(logsForToday[i]);
@@ -174,52 +174,86 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
         }
     };
 
-    //cycles through user's myFoods and passes the one selected to the logFood function
-    $scope.addFood = function(foodId) {
-        var arrayOfMyFoods = UserService.userInfo.data.myFoods;
-        for (var i = 0; i< arrayOfMyFoods.length; i++) {
-            if (arrayOfMyFoods[i]._id === foodId) {
-                logFood(arrayOfMyFoods[i]);
+    //searches API and displays results in popup window
+    $scope.searchAPI = function(searchTerm) {
+        $scope.searchFoods = [];
+        var searchUrl = 'https://api.nutritionix.com/v1_1/search/' + searchTerm + '?results=0:20&fields=item_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_dietary_fiber,nf_protein&appId=ba0956f6&appKey=8f89eb62b769ec698f234199846da134';
+        console.log(searchUrl);
+        $http.get(searchUrl).then(function(response) {
+            var results = response.data.hits;
+            for(var i = 0; i < results.length; i++) {
+                var food = {};
+                food.name = results[i].fields.item_name;
+                food.calories = Math.round(results[i].fields.nf_calories);
+                food.fat = Math.round(results[i].fields.nf_total_fat);
+                food.carbs = Math.round(results[i].fields.nf_total_carbohydrate);
+                food.protein = Math.round(results[i].fields.nf_protein);
+                food.fiber = Math.round(results[i].fields.nf_dietary_fiber);
+                food.netCarbs = Math.round(results[i].fields.nf_total_carbohydrate - results[i].fields.nf_dietary_fiber);
+                $scope.searchFoods.push(food);
             }
-        }
+        console.log($scope.searchFoods);
+        })
     };
 
+    ////cycles through user's myFoods and passes the one selected to the logFood function
+    //$scope.addFood = function(foodId) {
+    //    var arrayOfMyFoods = UserService.userInfo.data.myFoods;
+    //    for (var i = 0; i< arrayOfMyFoods.length; i++) {
+    //        if (arrayOfMyFoods[i]._id === foodId) {
+    //            logFood(arrayOfMyFoods[i]);
+    //        }
+    //    }
+    //};
+
+    //deletes a logged food by log id
     $scope.removeLog = function(logId) {
-        console.log('clicked:', logId);
-
-
         $http.delete('/userInfo/removeLog/' + logId).then(function(response) {
-            console.log(response);
             updateDisplay();
         });
 
     };
 
     //adds the selected food to the user's logs
-    function logFood(foodToAdd) {
+    $scope.logFood = function(foodToAdd) {
+        console.log('food to add:', foodToAdd);
+
         var logToPut = {username: UserService.userInfo.data.username, log: {date: $scope.date,
                                 food: foodToAdd,
                                 meal: $scope.meal}};
+        console.log('food to log:', logToPut);
         $http.put('/userInfo/addLog', logToPut).then(function (response) {
-            console.log('addLog response:',response);
             updateDisplay();
 
-        })
+        //})
     };
 
-    //$scope.prevDay = function() {
-    //    UserService.prevDay();
-    //    updateDisplay();
-    //
-    //};
-    //
-    //$scope.nextDay = function() {
-    //    console.log($scope.date);
-    //    UserService.nextDay();
-    //    updateDisplay();
-    //    console.log(UserService.userInfo.currentDate);
-    //
-    //};
+
+    //decrements date and updates display
+    $scope.prevDay = function() {
+        var yesterday = dateToChange;
+        console.log('clicked');
+        console.log('before:', yesterday);
+        yesterday.setDate(yesterday.getDate() - 1);
+        console.log('after:', yesterday);
+        dateToChange = yesterday;
+        $scope.date = yesterday;
+        $scope.displayDate = yesterday.toDateString();
+        updateDisplay();
+    };
+
+    //increments date and updates display
+    $scope.nextDay = function() {
+        var tomorrow = dateToChange;
+        console.log('clicked');
+        console.log('before:', tomorrow);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        console.log('after:', tomorrow);
+        dateToChange = tomorrow;
+        $scope.date = tomorrow;
+        $scope.displayDate = tomorrow.toDateString();
+        updateDisplay();
+    };
 
     //pulls user's info and updates DOM on screen load
     updateDisplay();
@@ -237,21 +271,21 @@ app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function(
 
     $scope.myFood = {};
     $scope.userInfo = UserService.userInfo;
-    console.log('user info from myFoods', $scope.userInfo);
+    //console.log('user info from myFoods', $scope.userInfo);
     $scope.allMyFoods = $scope.userInfo.data.myFoods;
 
     $scope.addMyFood = function() {
         $scope.error = '';
-        console.log($scope.myFood);
+        //console.log($scope.myFood);
         var objectToSend = {username: $scope.userInfo.data.username, foodToAdd: $scope.myFood};
 
         //make http post to add food to db
         $http.put('/userInfo/addFood', objectToSend).then(function(response) {
-            console.log('add food response:', response);
+            //console.log('add food response:', response);
 
             if (response.data == 'error') {
                 $scope.error = 'Could not add that food. Please make sure all blanks are filled in.';
-                console.log($scope.error)
+                //console.log($scope.error)
             }
             UserService.getUserInfo($scope.userInfo.data.username);
             $scope.displayMyFoods();
@@ -261,7 +295,7 @@ app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function(
     $scope.displayMyFoods = function() {
         //make get call to db and fill $scope.allMyFoods
         $scope.allMyFoods = $scope.userInfo.data.myFoods;
-        console.log('allMyFoods', $scope.allMyFoods);
+        //console.log('allMyFoods', $scope.allMyFoods);
 
         UserService.getUserInfo();
 
@@ -281,8 +315,8 @@ app.controller('StatsController', ['$scope', '$http', 'UserService', function($s
 
 app.factory('UserService', ['$http', function($http) {
     var userInfo = {};
-    var today = new Date();
-    userInfo.currentDate = today;
+    //var today = new Date();
+    //userInfo.currentDate = today;
 
 
     function getUserInfo() {
@@ -296,24 +330,24 @@ app.factory('UserService', ['$http', function($http) {
         })
     };
 
-    function prevDay() {
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        userInfo.currentDate = yesterday;
-    };
-
-    function nextDay() {
-        var tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        userInfo.currentDate = tomorrow;
-        console.log('inside:', userInfo.currentDate);
-    };
+    //function prevDay() {
+    //    var yesterday = new Date();
+    //    yesterday.setDate(yesterday.getDate() - 1);
+    //    userInfo.currentDate = yesterday;
+    //};
+    //
+    //function nextDay() {
+    //    var tomorrow = new Date();
+    //    tomorrow.setDate(tomorrow.getDate() + 1);
+    //    userInfo.currentDate = tomorrow;
+    //    console.log('inside:', userInfo.currentDate);
+    //};
 
     return {
         getUserInfo: getUserInfo,
-        userInfo: userInfo,
-        prevDay: prevDay,
-        nextDay: nextDay
+        userInfo: userInfo
+        //prevDay: prevDay,
+        //nextDay: nextDay
     }
 
 }]);
