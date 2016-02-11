@@ -77,21 +77,20 @@ router.put('/addLog', function(request, response) {
 
 router.put('/updateGoals', function(request, response) {
     console.log(request.body);
-    console.log(request.params);
     var name = request.body.username;
     var goalUpdate = request.body.goals;
     console.log(goalUpdate);
 
     User.update(
         {username: name},
-        {$set: {goals: goalUpdate}}),
+        {$set: {goals: goalUpdate}},
         function(err, user) {
             if(err) {
                 console.log('Error updating goal:', err);
             } else {
                 response.send(user);
             }
-        }
+        })
 });
 
 router.delete('/removeLog/:id', function(request, response) {

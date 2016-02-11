@@ -250,30 +250,61 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
 app.controller('GoalsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
-    //var goals = UserService.userInfo.goals;
-    //$scope.fatPercentage = goals.fat;
+    var goals = UserService.userInfo.data.goals;
+    $scope.calories = goals.calories;
+    $scope.fatPercentage = goals.fat;
+    $scope.netCarbsPercentage = goals.netCarbs;
+    $scope.proteinPercentage = goals.protein;
 
 
     function updateGoals() {
-        var goals = {username: UserService.userInfo.data.username, goals: {calories: 2000, fat: 75, netCarbs: 5, protein: 20}};
         $http.put('userInfo/updateGoals', goals).then(function() {
+            //var goals = {username: UserService.userInfo.data.username, goals: {calories: 2000, fat: 75, netCarbs: 5, protein: 20}};
+
 
         })
     }
-    //var calories = 2000;
-    //$scope.fatPercentage = '75';
-    //$scope.netCarbsPercentage = '5';
-    //$scope.proteinPercentage = '20';
-    ////var fatPercentageNumber = parseInt($scope.fatPercentage) / 100;
-    //
-    //
-    //$scope.macronutrientObject = {
-    //    //calories: 2000,
-    //    //fatPercentage: parseInt($scope.fatPercentage),
-    //    //fat: calories,
-    //    netCarbs: Math.round(this.calories * (parseInt($scope.netCarbsPercentage) / 100) / 4),
-    //    protein: Math.round(this.calories * (parseInt($scope.proteinPercentage) / 100) / 4)
-    //};
+
+    $scope.macronutrientObject = {
+        calories: $scope.calories,
+        //fatPercentage: parseInt($scope.fatPercentage),
+        fat: Math.round($scope.calories * (parseInt($scope.fatPercentage) / 100) / 9),
+        netCarbs: Math.round($scope.calories * (parseInt($scope.netCarbsPercentage) / 100) / 4),
+        protein: Math.round($scope.calories * (parseInt($scope.proteinPercentage) / 100) / 4)
+    };
+
+    $scope.modifyMacro = function(macro, direction) {
+        switch(macro) {
+            case 'calories':
+                if (direction == 'up') {
+                    $scope.calories += 1;
+                } else {
+                    $scope.calories -= 1;
+                }
+                break;
+            case 'fat':
+                if (direction == 'up') {
+                    $scope.fatPercentage += 1;
+                } else {
+                    $scope.fatPercentage -= 1;
+                }
+                break;
+            case 'netCarbs':
+                if (direction == 'up') {
+                    $scope.netCarbsPercentage += 1;
+                } else {
+                    $scope.netCarbsPercentage -= 1;
+                }
+                break;
+            case 'protein':
+                if (direction == 'up') {
+                    $scope.proteinPercentage += 1;
+                } else {
+                    $scope.proteinPercentage -= 1;
+                }
+                break;
+        }
+    };
     //
     //$scope.macronutrientObject[fat] = calories;
     //
@@ -285,9 +316,7 @@ app.controller('GoalsController', ['$scope', '$http', 'UserService', function($s
     //
     //};
 
-    UserService.getUserInfo().then(function() {
-        updateGoals();
-    });
+    UserService.getUserInfo();
 
     //UserService.getUserInfo().then(function() {
     //    console.log($scope.fatPercentage);

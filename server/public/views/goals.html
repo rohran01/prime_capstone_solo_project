@@ -5,33 +5,32 @@
     <div class="box-container">
          <div class="goal-box">
              <h2>Calories</h2>
-             <input class="goal-input" type="number" ng-model="goalCalories">
-             <button><i class="fa fa-chevron-up"></i></button>
-             <h3 class="goal-display">{{macronutrientObject.calories}}</h3>
-             <button><i class="fa fa-chevron-down"></i></button>
+             <input class="goal-input" type="number" ng-model="calories">
+             <button ng-click="modifyMacro('calories', 'up')"><i class="fa fa-chevron-up"></i></button>
+             <h3 class="goal-display">{{calories}}</h3>
+             <button ng-click="modifyMacro('calories', 'down')"><i class="fa fa-chevron-down"></i></button>
          </div>
         <div class="goal-box">
             <h2>Fat</h2>
-            <input class="goal-input" type="number" ng-bind="macronutrientObject.fat">
-            <p>{{macronutrientObject.fat}}</p>
-            <button><i class="fa fa-chevron-up"></i></button>
+            <p>{{macronutrientObject.fat}}g</p>
+            <button ng-click="modifyMacro('fat', 'up')"><i class="fa fa-chevron-up"></i></button>
             <h3 class="goal-display">{{fatPercentage}}%</h3>
-            <button><i class="fa fa-chevron-down"></i></button>
+            <button ng-click="modifyMacro('fat', 'down')"><i class="fa fa-chevron-down"></i></button>
         </div>
         <div class="goal-box">
             <h2>Net Carbs</h2>
-            <input class="goal-input" type="number" ng-bind="macronutrientObject.netCarbs">
-            <button><i class="fa fa-chevron-up" ></i></button>
+            <p>{{macronutrientObject.netCarbs}}g</p>
+            <button ng-click="modifyMacro('netCarbs', 'up')"><i class="fa fa-chevron-up" ></i></button>
             <h3 class="goal-display">{{netCarbsPercentage}}%</h3>
-            <button><i class="fa fa-chevron-down"></i></button>
+            <button ng-click="modifyMacro('netCarbs', 'down')"><i class="fa fa-chevron-down"></i></button>
         </div>
         <div class="goal-box">
             <h2>Protein</h2>
-            <input class="goal-input" type="number" ng-bind="macronutrientObject.protein">
-            <button><i class="fa fa-chevron-up"></i></button>
+            <p>{{macronutrientObject.protein}}g</p>
+            <button ng-click="modifyMacro('protein', 'up')"><i class="fa fa-chevron-up"></i></button>
             <h3 class="goal-display">{{proteinPercentage}}%</h3>
-            <button><i class="fa fa-chevron-down"></i></button>
+            <button ng-click="modifyMacro('protein', 'down')"><i class="fa fa-chevron-down"></i></button>
         </div>
-        <button ng-click="calculateMacros()">Calculate</button>
+        <button ng-click="calculateMacros()">Save Macros</button>
     </div>
 </div>
