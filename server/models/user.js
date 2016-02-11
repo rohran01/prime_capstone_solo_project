@@ -7,24 +7,18 @@ var SALT_WORK_FACTOR = 10;
 
 var Schema = mongoose.Schema;
 
-//var FoodSchema = new Schema({
-//    name: {type: String},
-//    calories: {type: Number},
-//    fat: {type: Number},
-//    carbs: {type: Number},
-//    protein: {type: Number},
-//    fiber: {type: Number},
-//    netCarbs: {type: Number}
-//});
-
 var UserSchema = new Schema({
     username: {type: String, required: true, index: {unique: true}},
     password: {type: String, require: true},
     logs: [{date: {type: Date, required: true},
             food: {type: Food},
             meal: String}],
-    myFoods: [Food]
-});
+    myFoods: [Food],
+    goals: {calories: Number,
+            fat: Number,
+            netCarbs: Number,
+            protein: Number}
+}, {minimize: false});
 
 //hashes passwords
 

@@ -12,7 +12,7 @@ var logout = require('./routes/logout');
 
 var app = express();
 var localStrategy = require('passport-local').Strategy;
-var mongoURI = 'mongodb://localhost:27017/mongo_ketolog';
+var mongoURI = 'mongodb://localhost:27017/mongo_ketolog3';
 var MongoDB = mongoose.connect(mongoURI).connection;
 
 app.use(express.static('server/public'));

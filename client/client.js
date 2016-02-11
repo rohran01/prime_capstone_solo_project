@@ -196,16 +196,6 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
         })
     };
 
-    ////cycles through user's myFoods and passes the one selected to the logFood function
-    //$scope.addFood = function(foodId) {
-    //    var arrayOfMyFoods = UserService.userInfo.data.myFoods;
-    //    for (var i = 0; i< arrayOfMyFoods.length; i++) {
-    //        if (arrayOfMyFoods[i]._id === foodId) {
-    //            logFood(arrayOfMyFoods[i]);
-    //        }
-    //    }
-    //};
-
     //deletes a logged food by log id
     $scope.removeLog = function(logId) {
         $http.delete('/userInfo/removeLog/' + logId).then(function(response) {
@@ -259,6 +249,50 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 }]);
 
 app.controller('GoalsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
+
+    //var goals = UserService.userInfo.goals;
+    //$scope.fatPercentage = goals.fat;
+
+
+    function updateGoals() {
+        var goals = {username: UserService.userInfo.data.username, goals: {calories: 2000, fat: 75, netCarbs: 5, protein: 20}};
+        $http.put('userInfo/updateGoals', goals).then(function() {
+
+        })
+    }
+    //var calories = 2000;
+    //$scope.fatPercentage = '75';
+    //$scope.netCarbsPercentage = '5';
+    //$scope.proteinPercentage = '20';
+    ////var fatPercentageNumber = parseInt($scope.fatPercentage) / 100;
+    //
+    //
+    //$scope.macronutrientObject = {
+    //    //calories: 2000,
+    //    //fatPercentage: parseInt($scope.fatPercentage),
+    //    //fat: calories,
+    //    netCarbs: Math.round(this.calories * (parseInt($scope.netCarbsPercentage) / 100) / 4),
+    //    protein: Math.round(this.calories * (parseInt($scope.proteinPercentage) / 100) / 4)
+    //};
+    //
+    //$scope.macronutrientObject[fat] = calories;
+    //
+    //console.log(fatPercentageNumber);
+    //$scope.calculateMacros = function() {
+    //    console.log($scope.goalCalories);
+    //    console.log('macro fat:', $scope.macronutrientObject.fat);
+    //    console.log('macro fat type:', typeof $scope.macronutrientObject.fat);
+    //
+    //};
+
+    UserService.getUserInfo().then(function() {
+        updateGoals();
+    });
+
+    //UserService.getUserInfo().then(function() {
+    //    console.log($scope.fatPercentage);
+    //});
+
 
 
 
