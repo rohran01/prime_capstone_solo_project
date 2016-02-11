@@ -5,32 +5,35 @@
     <div class="box-container">
          <div class="goal-box">
              <h2>Calories</h2>
-             <input class="goal-input" type="number" ng-model="calories">
+             <input class="goal-input" type="number" min="0" ng-blur="caloriesUpdate()" ng-model="calories">
              <button ng-click="modifyMacro('calories', 'up')"><i class="fa fa-chevron-up"></i></button>
              <h3 class="goal-display">{{calories}}</h3>
              <button ng-click="modifyMacro('calories', 'down')"><i class="fa fa-chevron-down"></i></button>
          </div>
         <div class="goal-box">
-            <h2>Fat</h2>
-            <p>{{macronutrientObject.fat}}g</p>
+            <h2>Fat(g)</h2>
+            <input class="goal-input" type="number" min="0" ng-change="updateMacroPercentages()" ng-model="macroObject.fat">
             <button ng-click="modifyMacro('fat', 'up')"><i class="fa fa-chevron-up"></i></button>
             <h3 class="goal-display">{{fatPercentage}}%</h3>
             <button ng-click="modifyMacro('fat', 'down')"><i class="fa fa-chevron-down"></i></button>
         </div>
         <div class="goal-box">
-            <h2>Net Carbs</h2>
-            <p>{{macronutrientObject.netCarbs}}g</p>
+            <h2>Net Carbs(g)</h2>
+            <input class="goal-input" type="number" min="0" ng-change="updateMacroPercentages()" ng-model="macroObject.netCarbs">
             <button ng-click="modifyMacro('netCarbs', 'up')"><i class="fa fa-chevron-up" ></i></button>
             <h3 class="goal-display">{{netCarbsPercentage}}%</h3>
             <button ng-click="modifyMacro('netCarbs', 'down')"><i class="fa fa-chevron-down"></i></button>
         </div>
         <div class="goal-box">
-            <h2>Protein</h2>
-            <p>{{macronutrientObject.protein}}g</p>
+            <h2>Protein(g)</h2>
+            <input class="goal-input" type="number" min="0" ng-change="updateMacroPercentages()" ng-model="macroObject.protein">
             <button ng-click="modifyMacro('protein', 'up')"><i class="fa fa-chevron-up"></i></button>
             <h3 class="goal-display">{{proteinPercentage}}%</h3>
             <button ng-click="modifyMacro('protein', 'down')"><i class="fa fa-chevron-down"></i></button>
         </div>
-        <button ng-click="calculateMacros()">Save Macros</button>
+        <button ng-click="updateGoals()">Save Goals</button>
+        <p ng-if="percentageError">Could not log these goals. Please make sure all percentages total 100, not {{percentageTotal}}.</p>
+        <p ng-if="confirmation">Congratulations! You've set a new goal! Go get 'em, tiger!</p>
+        <p ng-if="setError">We're sorry! There was an error in setting your new goal. Please try again.</p>
     </div>
 </div>

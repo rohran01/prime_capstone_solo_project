@@ -248,32 +248,88 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
 }]);
 
-app.controller('GoalsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
+app.controller('GoalsController', ['$scope', '$http', '$timeout', 'UserService', function($scope, $http, $timeout, UserService) {
 
     var goals = UserService.userInfo.data.goals;
+    $scope.error = false;
+    $scope.confirmation = false;
+    $scope.setError = false;
     $scope.calories = goals.calories;
     $scope.fatPercentage = goals.fat;
     $scope.netCarbsPercentage = goals.netCarbs;
     $scope.proteinPercentage = goals.protein;
 
-
-    function updateGoals() {
-        $http.put('userInfo/updateGoals', goals).then(function() {
-            //var goals = {username: UserService.userInfo.data.username, goals: {calories: 2000, fat: 75, netCarbs: 5, protein: 20}};
-
-
-        })
-    }
-
-    $scope.macronutrientObject = {
+    $scope.macroObject = {
         calories: $scope.calories,
-        //fatPercentage: parseInt($scope.fatPercentage),
-        fat: Math.round($scope.calories * (parseInt($scope.fatPercentage) / 100) / 9),
-        netCarbs: Math.round($scope.calories * (parseInt($scope.netCarbsPercentage) / 100) / 4),
-        protein: Math.round($scope.calories * (parseInt($scope.proteinPercentage) / 100) / 4)
+        fat: Math.round($scope.calories * ($scope.fatPercentage / 100) / 9),
+        netCarbs: Math.round($scope.calories * ($scope.netCarbsPercentage / 100) / 4),
+        protein: Math.round($scope.calories * ($scope.proteinPercentage / 100) / 4)
+    };
+
+    $scope.updateGoals = function() {
+
+        console.log('click');
+
+        $scope.percentageTotal = ($scope.fatPercentage + $scope.netCarbsPercentage + $scope.proteinPercentage);
+
+        if ($scope.percentageTotal === 100) {
+            var objectToSend = {username: UserService.userInfo.data.username,
+                goals: {
+                    calories: $scope.calories,
+                    fat: $scope.fatPercentage,
+                    netCarbs: $scope.netCarbsPercentage,
+                    protein: $scope.proteinPercentage
+                }
+            };
+            console.log(objectToSend);
+            $http.put('userInfo/updateGoals', objectToSend).then(function (response) {
+                $scope.error = false;
+                $scope.confirmation = false;
+                $scope.setError = false;
+
+                if (response.status == 200) {
+                    $scope.confirmation = true;
+                } else {
+                    $scope.setError = true;
+                }
+            })
+        } else {
+            $scope.percentageError = true;
+        }
+    };
+
+    $scope.updateMacroCalculations = function() {
+        $scope.error = false;
+        $scope.confirmation = false;
+        $scope.setError = false;
+        $scope.macroObject.calories = $scope.calories;
+        $scope.macroObject.fat = Math.round($scope.calories * ($scope.fatPercentage / 100) / 9);
+        $scope.macroObject.netCarbs = Math.round($scope.calories * ($scope.netCarbsPercentage / 100) / 4);
+        $scope.macroObject.protein = Math.round($scope.calories * ($scope.proteinPercentage / 100) / 4);
+    };
+
+    $scope.updateMacroPercentages = function() {
+        $scope.error = false;
+        $scope.confirmation = false;
+        $scope.setError = false;
+        console.log(typeof $scope.macroObject.fat, $scope.macroObject.fat, typeof $scope.calories, $scope.calories);
+        $scope.fatPercentage = Math.round(100 * ($scope.macroObject.fat * 9 / $scope.calories));
+        console.log($scope.fatPercentage);
+        $scope.netCarbsPercentage = Math.round(100 * ($scope.macroObject.netCarbs * 9 / $scope.calories));
+        $scope.proteinPercentage = Math.round(100 * ($scope.macroObject.protein * 9 / $scope.calories));
+    };
+
+    $scope.caloriesUpdate = function() {
+        $scope.updateMacroCalculations();
+        $timeout(function() {
+            $scope.updateMacroPercentages();
+        }, 200);
     };
 
     $scope.modifyMacro = function(macro, direction) {
+        $scope.error = false;
+        $scope.confirmation = false;
+        $scope.setError = false;
         switch(macro) {
             case 'calories':
                 if (direction == 'up') {
@@ -304,26 +360,12 @@ app.controller('GoalsController', ['$scope', '$http', 'UserService', function($s
                 }
                 break;
         }
+        $scope.updateMacroCalculations()
     };
-    //
-    //$scope.macronutrientObject[fat] = calories;
-    //
-    //console.log(fatPercentageNumber);
-    //$scope.calculateMacros = function() {
-    //    console.log($scope.goalCalories);
-    //    console.log('macro fat:', $scope.macronutrientObject.fat);
-    //    console.log('macro fat type:', typeof $scope.macronutrientObject.fat);
-    //
-    //};
+
+
 
     UserService.getUserInfo();
-
-    //UserService.getUserInfo().then(function() {
-    //    console.log($scope.fatPercentage);
-    //});
-
-
-
 
 }]);
 
@@ -352,6 +394,8 @@ app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function(
             $scope.allMyFoods = UserService.userInfo.data.myFoods;
         })
     };
+
+
 
     UserService.getUserInfo;
 
