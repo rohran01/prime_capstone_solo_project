@@ -1,6 +1,5 @@
 
 <div class="log-container">
-    <div ng-show="addWindow" class="black-overlay"></div>
     <img src="views/images/kale.jpg" class="bg" />
     <div class="date-container">
         <i ng-click="prevDay()" class="fa fa-angle-left fa-2x"></i>
@@ -117,10 +116,11 @@
     </div>
 </div>
 
+<div ng-show="addWindow" class="black-overlay"></div>
 <div ng-show="addWindow" class="add-box">
+    <div ng-show="spinBox" class="spin-box"><i class="fa fa-spinner fa-pulse fa-5x"></i></div>
     <div class="exit-button">
         <i ng-click="addWindow = false" class="fa fa-times"></i>
-        </button>
     </div><br>
     <div class="add-box-header">
         <h3>{{meal}}</h3>

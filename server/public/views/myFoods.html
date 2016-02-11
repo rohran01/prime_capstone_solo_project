@@ -1,6 +1,5 @@
 <div>
     <img src="views/images/eggs.jpg" class="bg" />
-    <div ng-show="addWindow" class="black-overlay"></div>
     <div class="foods-container">
         <h2>My Foods</h2>
         <button class="add-food" ng-click="addWindow = true">Add Food</button>
@@ -35,7 +34,9 @@
     </div>
 </div>
 
+<div ng-show="addWindow" class="black-overlay"></div>
 <div ng-show="addWindow" class="add-food-container add-box">
+    </div>
     <div class="exit-button">
         <i ng-click="addWindow = false" class="fa fa-times"></i>
     </div><br>

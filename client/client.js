@@ -93,6 +93,7 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
     $scope.dinners = [];
     $scope.snacks = [];
     $scope.total = {};
+    $scope.spinBox = false;
 
     //pulls latest user data from DB and then updates DOM
     function updateDisplay() {
@@ -176,6 +177,7 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
 
     //searches API and displays results in popup window
     $scope.searchAPI = function(searchTerm) {
+        $scope.spinBox = true;
         $scope.searchFoods = [];
         var searchUrl = 'https://api.nutritionix.com/v1_1/search/' + searchTerm + '?results=0:20&fields=item_name,nf_calories,nf_total_fat,nf_total_carbohydrate,nf_dietary_fiber,nf_protein&appId=ba0956f6&appKey=8f89eb62b769ec698f234199846da134';
         //console.log(searchUrl);
@@ -192,8 +194,11 @@ app.controller('DailyLogsController', ['$scope', '$http', 'UserService', functio
                 food.netCarbs = Math.round(results[i].fields.nf_total_carbohydrate - results[i].fields.nf_dietary_fiber);
                 $scope.searchFoods.push(food);
             }
-        //console.log($scope.searchFoods);
-        })
+            //console.log($scope.searchFoods);
+        }).then(function() {
+            $scope.spinBox = false;
+        });
+
     };
 
     //deletes a logged food by log id
@@ -333,9 +338,9 @@ app.controller('GoalsController', ['$scope', '$http', '$timeout', 'UserService',
         switch(macro) {
             case 'calories':
                 if (direction == 'up') {
-                    $scope.calories += 1;
+                    $scope.calories += 50;
                 } else {
-                    $scope.calories -= 1;
+                    $scope.calories -= 50;
                 }
                 break;
             case 'fat':
@@ -414,7 +419,6 @@ app.factory('UserService', ['$http', function($http) {
 
     function getUserInfo() {
         return $http.get('/userInfo').success(function(response) {
-            //console.log(response);
             userInfo.data = response;
             userInfo.data.isLoggedIn = true;
             return response;
