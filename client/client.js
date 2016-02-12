@@ -376,6 +376,7 @@ app.controller('GoalsController', ['$scope', '$http', '$timeout', 'UserService',
 
 app.controller('MyFoodsController', ['$scope', '$http', 'UserService', function($scope, $http, UserService) {
 
+    $scope.addWindow = false;
     $scope.myFood = {};
     $scope.allMyFoods = UserService.userInfo.data.myFoods;
 
@@ -424,10 +425,8 @@ app.factory('UserService', ['$http', function($http) {
             return response;
         })
     };
-
     return {
         getUserInfo: getUserInfo,
         userInfo: userInfo
     }
-
 }]);

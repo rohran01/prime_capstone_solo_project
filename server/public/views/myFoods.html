@@ -4,19 +4,20 @@
         <h2>My Foods</h2>
         <button class="add-food" ng-click="addWindow = true">Add Food</button>
         <div class="clearfix"></div>
-        <div class="foods-header">
+        <div class="header-container">
             <ul>
                 <li>Name</li>
                 <li>Calories</li>
-                <li>Fat</li>
-                <li>Carbs</li>
-                <li>Protein</li>
-                <li>Fiber</li>
-                <li>Net Carbs</li>
+                <li>Fat(g)</li>
+                <li>Carbs(g)</li>
+                <li>Protein(g)</li>
+                <li>Fiber(g)</li>
+                <li>Net Carbs(g)</li>
+                <li><div></div></li>
             </ul>
         </div>
         <div class="clearfix"></div>
-        <div ng-repeat="food in allMyFoods" class="foods-list">
+        <div ng-repeat="food in allMyFoods" class="meal-container">
             <h4>{{food.name}}</h4>
             <div class="clearfix"></div>
             <ul>
@@ -36,12 +37,10 @@
 
 <div ng-show="addWindow" class="black-overlay"></div>
 <div ng-show="addWindow" class="add-food-container add-box">
-    </div>
     <div class="exit-button">
         <i ng-click="addWindow = false" class="fa fa-times"></i>
     </div><br>
     <h2>Add Foods</h2>
-
     <div class="food-entry">
         <div class="food-input">
             <label for="name">Name</label><br>
@@ -52,23 +51,23 @@
             <input type="text" ng-model="myFood.calories" id="calories" />
         </div>
         <div class="food-input">
-            <label for="fat">Fat</label><br>
+            <label for="fat">Fat(g)</label><br>
             <input type="text" ng-model="myFood.fat" id="fat" />
         </div>
         <div class="food-input">
-            <label for="carbs">Carbs</label><br>
+            <label for="carbs">Carbs(g)</label><br>
             <input type="text" ng-model="myFood.carbs" id="carbs" />
         </div>
         <div class="food-input">
-            <label for="protein">Protein</label><br>
+            <label for="protein">Protein(g)</label><br>
             <input type="text" ng-model="myFood.protein" id="protein" />
         </div>
         <div class="food-input">
-            <label for="fiber">Fiber</label><br>
+            <label for="fiber">Fiber(g)</label><br>
             <input type="text" ng-model="myFood.fiber" id="fiber" />
         </div>
         <div class="food-input">
-            <label for="netcarbs">Net Carbs</label><br>
+            <label for="netcarbs">Net Carbs(g)</label><br>
             <input type="text" ng-model="myFood.netCarbs" id="netCarbs" />
         </div>
         <div class="food-input">
