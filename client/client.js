@@ -328,7 +328,7 @@ app.controller('GoalsController', ['$scope', '$http', '$timeout', 'UserService',
         $scope.updateMacroCalculations();
         $timeout(function() {
             $scope.updateMacroPercentages();
-        }, 200);
+        }, 400);
     };
 
     $scope.modifyMacro = function(macro, direction) {
